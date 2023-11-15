@@ -26,7 +26,7 @@ Overview goes here
 1. Clone github repository on your local machine
 
 ```
-git clone <repo link>
+git clone https://github.com/syedfaysel/BeIntelligent.git
 ```
 
 2. Obeserve the folder structure of the project.

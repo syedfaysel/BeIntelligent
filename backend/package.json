@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend for Beintelligent, a project for cse470 Assessment",
   "main": "index.js",
+  "type":"module",
   "devDependencies": {
     "nodemon": "^3.0.1"
   },

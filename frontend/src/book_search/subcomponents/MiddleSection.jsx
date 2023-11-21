@@ -13,8 +13,8 @@ export default function ({
     change_is_sorted_by_rating,
 }) {
     return (
-        <>
-            <div className="drawer lg:drawer-open">
+        <div className="backdrop-blur-sm bg-black/70">
+            <div className="drawer lg:drawer-open ">
                 <input
                     id="my-drawer-2"
                     type="checkbox"
@@ -67,6 +67,6 @@ export default function ({
                     </ul>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

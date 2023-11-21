@@ -1,6 +1,6 @@
 import MenuBar from "./subcomponents/MenuBar";
 import MiddleSection from "./subcomponents/MiddleSection";
-import Footer from "./subcomponents/Footer";
+import Footer from "../common_components/Footer";
 import "./BookSearch.css";
 import { useState } from "react";
 
@@ -279,17 +279,19 @@ export default function () {
                     </button>
                 </div>
             </div>
-            <MiddleSection
-                genres={genres}
-                books={books}
-                change_current_genre={change_current_genre}
-                change_searched_keyword={change_searched_keyword}
-                books_to_show={books_to_show}
-                change_books_to_show={change_books_to_show}
-                current_page={current_page}
-                change_current_page={change_current_page}
-                change_is_sorted_by_rating={change_is_sorted_by_rating}
-            />
+            <div className="bg-[url('./src/assets/bookstore-bg.jpg')]">
+                <MiddleSection
+                    genres={genres}
+                    books={books}
+                    change_current_genre={change_current_genre}
+                    change_searched_keyword={change_searched_keyword}
+                    books_to_show={books_to_show}
+                    change_books_to_show={change_books_to_show}
+                    current_page={current_page}
+                    change_current_page={change_current_page}
+                    change_is_sorted_by_rating={change_is_sorted_by_rating}
+                />
+            </div>
             <Footer />
         </div>
     );

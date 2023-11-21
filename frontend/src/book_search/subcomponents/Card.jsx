@@ -5,7 +5,7 @@ export default function ({ name, author, rating, genre }) {
         genre = [genre[0], genre[1], "..."];
     }
     return (
-        <div className="card w-72 bg-base-50 shadow-xl cursor-pointer">
+        <div className="card w-72 bg-base-50 shadow-xl cursor-pointer backdrop-blur-sm bg-black/20">
             {/* <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure> */}
             <figure>
                 <img

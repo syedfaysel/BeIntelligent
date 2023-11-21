@@ -5,15 +5,15 @@ import {createBook,updateBook,deleteBook,getBooks} from '../controllers/bookCont
 const router = express.Router();
 
 // Post a new book
-router.post('/createBook', createBook);
+router.post('/create-book', createBook);
 
 // Update a book
-router.patch('/updateBook/:id', updateBook);
+router.patch('/update-book/:id', updateBook);
 
 // Delete a book
-router.delete('/deleteBook/:id', deleteBook);
+router.delete('/delete-book/:id', deleteBook);
 
 // Get all books
-router.get('/getBooks', getBooks);
+router.get('/get-books', getBooks);
 
 export default router;

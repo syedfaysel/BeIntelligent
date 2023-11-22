@@ -1,10 +1,14 @@
 import { AiOutlineUnlock } from "react-icons/ai";
 import { BiUser } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const navigate_to_select_genre = useNavigate();
     return (
-        <div>
+        <div
+            className="text-white h-[100vh] flex justify-center items-center bg-cover"
+            style={{ backgroundImage: "url('../src/assets/bookstore-bg.jpg')" }}
+        >
             <div className="bg-slate-800 border border-slate-600 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-30 relative transition-all duration-200">
                 <h1 className="text-4xl font-bold text-center mb-8">
                     Register
@@ -46,8 +50,11 @@ const Register = () => {
                     <button
                         className="w-full mb-4 text-[18px] mt-6 rounded-full bg-white text-emerald-800 hover:bg-emerald-600 hover:text-white py-2 transition-colors duration-300"
                         type="submit"
+                        onClick={() => navigate_to_select_genre("/selectgenre")}
                     >
-                        <Link to="/SelectGenre">Register</Link>
+                        {" "}
+                        Register
+                        {/* <Link to="/SelectGenre">Register</Link> */}
                     </button>
                     <div className="mt-2 items-center">
                         <div className="my-4">

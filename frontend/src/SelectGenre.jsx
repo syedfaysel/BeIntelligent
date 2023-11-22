@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router";
 import Genre from "./Genre";
 
 export default function SelectGenre() {
+    const navigate_to_login = useNavigate();
     const genres = [
         "all",
         "romance",
@@ -35,7 +37,10 @@ export default function SelectGenre() {
         "title-challenge",
     ];
     return (
-        <div>
+        <div
+            className="text-white h-[100vh] flex justify-center items-center bg-cover"
+            style={{ backgroundImage: "url('../src/assets/bookstore-bg.jpg')" }}
+        >
             <div className="bg-slate-800 border border-slate-600 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-30 relative transition-all duration-200">
                 <h1 className="text-4xl font-bold text-center mb-8">
                     Select Your Favourite Genre
@@ -46,7 +51,10 @@ export default function SelectGenre() {
                     ))}
                 </div>
                 <div className="flex justify-center mt-8">
-                    <button className="btn btn-active btn-primary">
+                    <button
+                        className="btn btn-active btn-primary"
+                        onClick={() => navigate_to_login("/login")}
+                    >
                         Finish
                     </button>
                 </div>

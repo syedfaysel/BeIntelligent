@@ -10,6 +10,6 @@ const path = "/api/v1/";
 
 router.use(`${path}test`, testRoutes); //api/v1/test/test-get
 
-router.use("/api/books", bookRoutes);
+router.use(`${path}books`, bookRoutes);
 
 export default router;

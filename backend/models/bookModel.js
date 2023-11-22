@@ -150,5 +150,22 @@ const getAllBooks = async (queryParams) => {
     return { showBooks };
 };
 
-export default {Book, createNewBook, updateBookById, deleteBookById, getAllBooks};
+//For getting a single book
+const getBookById = async (id) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return false;
+        }
+        const singleBook = await Book.findById(id).select('isbn title author description image genres avgRating');
+        if (!singleBook) {
+            return false;
+        }
+        return singleBook; 
+    } catch (error) {
+        return false;
+    }
+};
+
+
+export default {Book, createNewBook, updateBookById, deleteBookById, getAllBooks, getBookById};
    

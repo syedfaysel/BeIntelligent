@@ -85,3 +85,66 @@ Method: `POST`, Endpoint: baseurl`/auth/login`
 
 ### get-books
 Method: `GET`, Endpoint: baseurl`/books/get-books`
+
+
+
+## Google Book API
+
+### Search books by author, title and keywords
+
+Method: `GET`, Endpoint: baseurl`/gbooks/`  
+Query Params (req.query): Takes 2 parameters - search, maxResults  
+No Request body required
+i.e `http://localhost:4000/api/v1/gbooks/?search={search query}`  
+Optional `maxResults` query: `.../gbooks/?search={search query}&maxResults={int}`  
+Default `maxResults` = 10
+<details>
+<summary>Reqest body: Empty</summary>
+ 
+```json
+
+```
+</details>
+
+<details>
+<summary>JSON Response:</summary>
+ 
+```json
+{
+    "success": true,
+    "books": [
+        {
+            "title": "Atomic Habits",
+            "subtitle": "the life-changing million-copy",
+            "authors": [
+                "James Clear"
+            ],
+            "description": "THE PHENOMENAL INTER...",
+            "pageCount": 234,
+            "categories": [
+                "Self-Help"
+            ],
+            "averageRating": 4,
+            "ratingsCount": 4,
+            "imageLinks": {
+                "smallThumbnail": "image_url",
+                "thumbnail": "image_url"
+            },
+            "previewLink": "external_google_book link",
+            "_isbn": [
+                {
+                    "type": "ISBN_13",
+                    "identifier": "9781473537804"
+                },
+                {
+                    "type": "ISBN_10",
+                    "identifier": "1473537800"
+                }
+            ]
+        }
+    ]
+}
+```
+</details>
+
+

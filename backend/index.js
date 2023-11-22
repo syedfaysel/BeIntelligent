@@ -6,7 +6,7 @@ import cors from "cors";
 import morgan from "morgan";
 //file imports
 import connectDB from "./config/db.js";
-import errorMiddleware from "./middlewares/errorMiddleware.js";
+//import errorMiddleware from "./middlewares/errorMiddleware.js";
 
 //routes import
 import allRoutes from "./routes/index.js";
@@ -32,8 +32,9 @@ app.get("/", (req, res) => {
 
 app.use(allRoutes);
 
+
 // validation middleware
-app.use(errorMiddleware);
+//app.use(errorMiddleware);
 
 //-------- Listen -------//
 const PORT = process.env.PORT || 8080;

@@ -114,6 +114,7 @@ Default `maxResults` = 10
     "success": true,
     "books": [
         {
+            "id": "gbs_book_id", //unique
             "title": "Atomic Habits",
             "subtitle": "the life-changing million-copy",
             "authors": [
@@ -131,16 +132,7 @@ Default `maxResults` = 10
                 "thumbnail": "image_url"
             },
             "previewLink": "external_google_book link",
-            "_isbn": [
-                {
-                    "type": "ISBN_13",
-                    "identifier": "9781473537804"
-                },
-                {
-                    "type": "ISBN_10",
-                    "identifier": "1473537800"
-                }
-            ]
+            "_isbn": "isbn_number" //unique
         }
     ]
 }

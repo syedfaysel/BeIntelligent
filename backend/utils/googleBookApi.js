@@ -32,6 +32,7 @@ const googleBookApi = async (searchQuery, maxResults = 10) => {
       } = items[i].volumeInfo;
 
       const bookObj = {
+        id: items[i].id,
         title,
         subtitle,
         authors,
@@ -45,9 +46,9 @@ const googleBookApi = async (searchQuery, maxResults = 10) => {
         imageLinks,
         previewLink,
       };
-      let isbn = items[i].volumeInfo.industryIdentifiers;
-      bookObj._isbn = isbn;
-
+      let isbn = industryIdentifiers[0];
+      bookObj._isbn = isbn.identifier;
+      
       //add to the array
       books.push(bookObj);
 

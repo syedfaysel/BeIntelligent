@@ -1,11 +1,15 @@
-import { express } from "express";
+import express from "express";
+import { loginController, signupController } from "../controllers/authController.js";
 
-import { signin, register } from "../controllers/authController";
 
+// router object ..//
 const router = express.Router();
 
 
-router.get("/", signin); //api/v1/auth/
-router.get("/", register);
-router.post('/addbooks', , addbooks) //api/v1/auth/addbooks/
-router.get('/', allbooks)
+//routes ....
+router.post('/login', loginController)
+
+router.post('/signup', signupController)
+
+
+export default router;

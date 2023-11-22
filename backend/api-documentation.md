@@ -12,7 +12,7 @@ i.e `http://localhost:4000/api/v1/`
 
 ### signup
 
-Endpoint: baseurl`/auth/signup`
+Method: `POST`, Endpoint: baseurl`/auth/signup`
 
 <details>
 <summary>Reqest body:</summary>
@@ -44,8 +44,7 @@ Endpoint: baseurl`/auth/signup`
 </details>
 
 ### login
-
-Endpoint: baseurl`/auth/login`
+Method: `POST`, Endpoint: baseurl`/auth/login`
 
 <details>
 <summary>Reqest body:</summary>
@@ -85,5 +84,4 @@ Endpoint: baseurl`/auth/login`
 [get all books](#get-books)
 
 ### get-books
-
-Endpoint:
+Method: `GET`, Endpoint: baseurl`/books/get-books`

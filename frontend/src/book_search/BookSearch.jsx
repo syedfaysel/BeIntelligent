@@ -2,11 +2,13 @@ import MenuBar from "./subcomponents/MenuBar";
 import MiddleSection from "./subcomponents/MiddleSection";
 import Footer from "../common_components/Footer";
 import "./BookSearch.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { fetchBooks } from "../api_controller/loadBooks";
 
 export default function () {
     const user_name = "Ahsan Habib";
-    const recommended_genre = ["romance", "mystery"];
+    const recommended_genre = ["Thriller"];
     const [searched_keyword, change_searched_keyword] = useState("");
     const [current_genre, change_current_genre] = useState("");
     const [current_page, change_current_page] = useState(1);
@@ -44,151 +46,53 @@ export default function () {
         "classics",
         "title-challenge",
     ];
-    const books = [
+
+    const books_t = [
         {
-            name: "The Foundation 1 HAHAHAHAHAHHAHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
+            name: "The Foundation 1",
             author: "Isaac Asimov",
             rating: 4.8,
             genre: ["romance", "fiction"],
         },
-        {
-            name: "The Foundation 2",
-            author: "Isaac Asimov hahahhahfshesfsjlfosefesofjesofehsofefhsofeo",
-            rating: 4.8,
-            genre: ["young-adult", "fantasy", "science-fiction"],
-        },
-        {
-            name: "The Foundation 3",
-            author: "Isaac Asimov",
-            rating: 4.8,
-            genre: ["young-adult", "fantasy", "science-fiction"],
-        },
-        {
-            name: "The Foundation 4",
-            author: "Isaac Asimov",
-            rating: 4.0,
-            genre: [
-                "science-fiction",
-                "non-fiction",
-                "children",
-                "history",
-                "mystery",
-                "covers",
-                "horror",
-            ],
-        },
-        {
-            name: "The Foundation 5",
-            author: "Isaac Asimov",
-            rating: 4.8,
-            genre: [
-                "fantasy",
-                "science-fiction",
-                "non-fiction",
-                "children",
-                "history",
-                "mystery",
-                "covers",
-                "horror",
-                "historical-fiction",
-                "best",
-                "gay",
-                "titles",
-                "paranormal",
-                "middle-grade",
-                "love",
-                "contemporary",
-                "historical-romance",
-                "lgbt",
-                "queer",
-            ],
-        },
-        {
-            name: "Your Name",
-            author: "Haruku Muraka",
-            rating: 4.8,
-            genre: [
-                "lgbt",
-                "queer",
-                "nonfiction",
-                "thriller",
-                "biography",
-                "women",
-                "series",
-                "lgbtq",
-                "classics",
-                "title-challenge",
-            ],
-        },
-        {
-            name: "One Piece",
-            author: "Some Guy",
-            rating: 4.6,
-            genre: [
-                "romance",
-                "fiction",
-                "young-adult",
-                "fantasy",
-                "science-fiction",
-            ],
-        },
-        {
-            name: "Grave of the Fireflies",
-            author: "Japanese Writter",
-            rating: 5,
-            genre: [
-                "romance",
-                "fiction",
-                "young-adult",
-                "fantasy",
-                "science-fiction",
-                "non-fiction",
-                "children",
-                "history",
-                "mystery",
-                "covers",
-                "horror",
-                "historical-fiction",
-                "best",
-                "gay",
-                "titles",
-                "paranormal",
-                "middle-grade",
-                "love",
-                "contemporary",
-                "historical-romance",
-                "lgbt",
-                "queer",
-                "nonfiction",
-                "thriller",
-                "biography",
-                "women",
-                "series",
-                "lgbtq",
-                "classics",
-                "title-challenge",
-            ],
-        },
-        {
-            name: "The Fool",
-            author: "Mark Toyen",
-            rating: 4.9,
-            genre: ["romance"],
-        },
     ];
+    const [books, set_books_data] = useState([...books_t]);
+    const recommended_book_list = (target) =>
+        target.filter((item) => {
+            let choose = false;
+            for (let i = 0; i < recommended_genre.length; i++) {
+                choose = item.genre.includes(recommended_genre[i]) | choose;
+            }
+            return choose;
+        });
 
-    books.sort((a, b) => a.name.localeCompare(b.name));
-    const recommended_book_list = books.filter((item) => {
-        let choose = false;
-        for (let i = 0; i < recommended_genre.length; i++) {
-            choose = item.genre.includes(recommended_genre[i]) | choose;
+    // api changes
+    // const books = [];
+    const set_data = async () => {
+        const data = await fetchBooks();
+        console.log(data);
+        const tmp_books = [];
+        for (let i = 0; i < data.length; i++) {
+            const tmp = {};
+            tmp.name = data[i].title;
+            tmp.author = data[i].author;
+            tmp.genre = data[i].genres;
+            tmp.rating = parseFloat(data[i].avgRating);
+            tmp_books.push(tmp);
         }
-        return choose;
-    });
+        tmp_books.sort((a, b) => a.name.localeCompare(b.name));
+        change_books_to_show(recommended_book_list(tmp_books));
+        return set_books_data(tmp_books);
+    };
+    // set_data();
+    useEffect(() => {
+        set_data();
+    }, []);
 
-    const [books_to_show, change_books_to_show] = useState([
-        ...recommended_book_list,
-    ]);
+    // end changes
+
+    const [books_to_show, change_books_to_show] = useState(
+        recommended_book_list(books)
+    );
     let bookpage_heading_text = searched_keyword
         ? 'Showing Search Result for Keyword "' + searched_keyword + '"'
         : current_genre
@@ -217,9 +121,9 @@ export default function () {
                             className="btn btn-sm btn-square btn-outline"
                             onClick={() => {
                                 change_is_sorted_by_rating(false);
-                                change_books_to_show([
-                                    ...recommended_book_list,
-                                ]);
+                                change_books_to_show(
+                                    recommended_book_list(books)
+                                );
                                 change_current_page(1);
                                 if (current_genre) {
                                     change_current_genre("");

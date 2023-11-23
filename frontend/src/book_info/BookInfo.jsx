@@ -43,7 +43,11 @@ export default function () {
     }
 
     return (
-        <div className={"flex flex-col bg-[url('" + image_url + "')]"}>
+        <div
+            className="flex flex-col bg-cover"
+            // subject to change based on relative image link
+            style={{ backgroundImage: "url('." + image_url + "')" }}
+        >
             <div className="backdrop-blur-sm bg-black/50">
                 <div className="navbar bg-base-100">
                     <div className="flex-1">

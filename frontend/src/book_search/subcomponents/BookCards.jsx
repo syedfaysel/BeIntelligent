@@ -19,6 +19,8 @@ export default function ({ books_to_show, current_page, change_current_page }) {
                             author={item.author}
                             rating={item.rating}
                             genre={item.genre}
+                            cover={item.cover}
+                            description={item.description}
                         />
                     ))}
                 </div>

@@ -49,7 +49,7 @@ export default function ({
                                     change_current_page(1);
                                     change_current_genre(genre);
                                     change_is_sorted_by_rating(false);
-                                    if (genre === "all") {
+                                    if (genre === "All") {
                                         change_books_to_show([...books]);
                                     } else {
                                         const filtered_book = books.filter(

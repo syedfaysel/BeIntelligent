@@ -1,10 +1,14 @@
 import { useLocation } from "react-router-dom";
 import Footer from "../common_components/Footer";
 import MenuDropdown from "../common_components/MenuDropdown";
+import { useState, useEffect } from "react";
 import "./BookInfo.css";
 
 export default function () {
-    let name, author, rating, genre, image_url;
+    let name, author, rating, genre, image_url, description;
+    const [bg_image, set_bg_image] = useState(
+        `url('./src/assets/the_foundation_2.jpg')`
+    );
 
     try {
         const { state } = useLocation();
@@ -13,42 +17,27 @@ export default function () {
         author = state.author;
         rating = state.rating;
         genre = state.genre;
+        description = state.description;
         console.log(state);
     } catch (e) {
         image_url = "./src/assets/the_foundation_2.jpg";
         name = "The Foundation 3";
         author = "Isaac Asimov";
         rating = 4.8;
-        genre = [
-            "fantasy",
-            "science-fiction",
-            "non-fiction",
-            "children",
-            "history",
-            "mystery",
-            "covers",
-            "horror",
-            "historical-fiction",
-            "best",
-            "gay",
-            "titles",
-            "paranormal",
-            "middle-grade",
-            "love",
-            "contemporary",
-            "historical-romance",
-            "lgbt",
-            "queer",
-        ];
+        genre = ["fantasy"];
     }
+
+    useEffect(() => {
+        set_bg_image(`url('${image_url}')`);
+    }, []);
 
     return (
         <div
             className="flex flex-col bg-cover"
             // subject to change based on relative image link
-            style={{ backgroundImage: "url('." + image_url + "')" }}
+            style={{ backgroundImage: bg_image }}
         >
-            <div className="backdrop-blur-sm bg-black/50">
+            <div className="backdrop-blur-sm bg-black/70">
                 <div className="navbar bg-base-100">
                     <div className="flex-1">
                         <a className="btn btn-ghost text-xl">BIntellegent</a>
@@ -89,6 +78,16 @@ export default function () {
                             <h3 className="text-3xl font-bold dark:text-white break-all">
                                 {author}
                             </h3>
+                        </div>
+                        <div>
+                            <h3 className="text-3xl font-semibold dark:text-white break-all">
+                                Description:
+                            </h3>
+                        </div>
+                        <div>
+                            <p className="text-lg text-gray-900 dark:text-white">
+                                {description}
+                            </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {genre.map((item) => (

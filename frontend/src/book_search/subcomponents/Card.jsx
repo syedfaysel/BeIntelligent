@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ({ name, author, rating, genre }) {
-    const image_url = "./src/assets/the_foundation_2.jpg";
+export default function ({ name, author, rating, genre, cover, description }) {
+    const image_url = cover;
     const name_mod = name.length > 20 ? name.slice(0, 16) + " ..." : name;
     const author_mod =
         author.length > 30 ? author.slice(0, 26) + " ..." : author;
@@ -21,6 +21,7 @@ export default function ({ name, author, rating, genre }) {
                         rating: rating,
                         genre: [...genre],
                         image_url: image_url,
+                        description: description,
                     },
                 });
             }}

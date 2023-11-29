@@ -36,9 +36,18 @@ const Register = () => {
                 .then((data) => {
                     if (data.success) {
                         navigate_to_select_genre("/selectgenre");
+                    } else {
+                        error_msg = "Username or password already taken!";
+                        change_error_state(error_msg);
+                        change_error_in_input(true);
                     }
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    error_msg = "400 Bad Request";
+                    change_error_state(error_msg);
+                    change_error_in_input(true);
+                    console.log(err);
+                });
         }
     }, [submission_attempt]);
 

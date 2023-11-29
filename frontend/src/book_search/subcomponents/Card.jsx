@@ -11,7 +11,7 @@ export default function ({ name, author, rating, genre, cover, description }) {
     const navigate = useNavigate();
     return (
         <div
-            className="card w-72 bg-base-50 shadow-xl cursor-pointer backdrop-blur-sm bg-black/20"
+            className="card w-72 bg-base-50 shadow-xl cursor-pointer backdrop-blur-sm bg-black/40"
             onClick={() => {
                 console.log(name + " Clicked");
                 navigate("/bookinfo", {

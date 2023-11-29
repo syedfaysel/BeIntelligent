@@ -13,7 +13,7 @@ export default function ({
     change_is_sorted_by_rating,
 }) {
     return (
-        <div className="backdrop-blur-sm bg-black/70">
+        <div className="shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-30 relative ">
             <div className="drawer lg:drawer-open ">
                 <input
                     id="my-drawer-2"

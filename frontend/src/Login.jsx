@@ -30,7 +30,11 @@ const Login = () => {
                     // console.log(data);
                     if (data.success) {
                         console.log(data);
-                        navigate_to_booksearch("/booksearch");
+                        navigate_to_booksearch("/booksearch", {
+                            state: {
+                                user_name: data.user.firstName,
+                            },
+                        });
                     } else {
                         error_msg = "Invalid user name or password!";
                         change_error_state(error_msg);

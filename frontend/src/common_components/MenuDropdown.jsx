@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 export default function () {
+    const navigate_to = useNavigate();
     return (
         <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -22,13 +25,23 @@ export default function () {
                 <li key="library">
                     <a>Library</a>
                 </li>
-                <li key="book-list">
+                <li
+                    key="book-list"
+                    onClick={() => {
+                        navigate_to("/booksearch");
+                    }}
+                >
                     <a>Book List</a>
                 </li>
                 <li key="challenges">
                     <a>Challenges</a>
                 </li>
-                <li key="logout">
+                <li
+                    key="logout"
+                    onClick={() => {
+                        navigate_to("/login");
+                    }}
+                >
                     <a>Logout</a>
                 </li>
             </ul>

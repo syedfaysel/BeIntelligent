@@ -6,6 +6,7 @@ import authRoutes from "./authRoutes.js";
 import gbookRoutes from './gbookRoutes.js';
 
 import bookRoutes from "./bookRoutes.js"
+import ratingRoutes from './ratingRoutes.js';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use(`${path}auth`, authRoutes);
 router.use(`${path}gbooks`, gbookRoutes);
 
 router.use(`${path}books`, bookRoutes);
+router.use(`${path}ratings`, authMiddleware, ratingRoutes);
 
 export default router;

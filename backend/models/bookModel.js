@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Rating from './ratingModel.js'
 
 const { Schema } = mongoose;
 
@@ -33,6 +34,8 @@ const bookSchema = new Schema({
         type: [String],
         required : true
     },
+    
+    ratings: [Rating.schema],
 
     avgRating: {
         type: Number,
@@ -142,7 +145,7 @@ const getAllBooks = async (queryParams) => {
     const skip = (pageNumber - 1) * pageSize;
 
     const showBooks = await Book.find(queryObject)
-        .select('isbn title author description image genres avgRating')
+        .select('isbn title author description image genres ratings avgRating')
         .skip(skip)
         .sort(sortOptions)
         .limit(pageSize);

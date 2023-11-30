@@ -7,9 +7,9 @@ const authMiddleware = (req, res, next) => {
     if (token) {
       token = token.split(" ")[1];
       const user = JWT.verify(token, process.env.JWT_SECRET)
-      req.userId = user.userId
+      req.userid = user.userid //Changed spelling of ID
       req.username = user.username
-
+     
       next();
     } else {
       res.status(401).json({

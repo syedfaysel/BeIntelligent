@@ -58,6 +58,28 @@ const addReview = async (req, res) => {
     });
     await Promise.all([newReview.save()]);
 
+    // Finding all reviews for the book
+    const allBookReviews = await Review.find({ book: bookId });
+
+    
+    if (allBookReviews.length !== 0) {
+      let totalRating = 0;
+      let countValidReviews = 0;
+      allBookReviews.forEach((review) => {
+        if (review.rating !== 0) {
+          totalRating += review.rating;
+          countValidReviews += 1;
+        }
+        
+      }); 
+      if (countValidReviews!==0){
+        const newAvgRating = totalRating / countValidReviews;
+        book.avgRating = newAvgRating;
+        await book.save();
+      }
+      
+    }
+
     res.status(201).json({
       success: true,
       message: 'Review or Rating added successfully',

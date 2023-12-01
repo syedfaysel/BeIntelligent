@@ -1,0 +1,202 @@
+import MenuBar from "./subcomponents/MenuBar";
+import MiddleSection from "./subcomponents/MiddleSection";
+import Footer from "../common_components/Footer";
+import "./BookSearch.css";
+import { useState, useEffect } from "react";
+
+import { fetchBooks } from "../api_controller/loadBooks";
+
+export default function () {
+    const user_name = "Ahsan Habib";
+    const recommended_genre = ["Thriller"];
+    const [searched_keyword, change_searched_keyword] = useState("");
+    const [current_genre, change_current_genre] = useState("");
+    const [current_page, change_current_page] = useState(1);
+    const [is_sorted_by_rating, change_is_sorted_by_rating] = useState(false);
+    const genres = [
+        "all",
+        "romance",
+        "fiction",
+        "young-adult",
+        "fantasy",
+        "science-fiction",
+        "non-fiction",
+        "children",
+        "history",
+        "mystery",
+        "covers",
+        "horror",
+        "historical-fiction",
+        "best",
+        "gay",
+        "titles",
+        "paranormal",
+        "middle-grade",
+        "love",
+        "contemporary",
+        "historical-romance",
+        "lgbt",
+        "queer",
+        "nonfiction",
+        "thriller",
+        "biography",
+        "women",
+        "series",
+        "lgbtq",
+        "classics",
+        "title-challenge",
+    ];
+
+    const books_t = [
+        {
+            name: "The Foundation 1",
+            author: "Isaac Asimov",
+            rating: 4.8,
+            genre: ["romance", "fiction"],
+        },
+    ];
+    const [books, set_books_data] = useState([...books_t]);
+    const recommended_book_list = (target) =>
+        target.filter((item) => {
+            let choose = false;
+            for (let i = 0; i < recommended_genre.length; i++) {
+                choose = item.genre.includes(recommended_genre[i]) | choose;
+            }
+            return choose;
+        });
+
+    // api changes
+    // const books = [];
+    const set_data = async () => {
+        const data = await fetchBooks();
+        console.log(data);
+        const tmp_books = [];
+        for (let i = 0; i < data.length; i++) {
+            const tmp = {};
+            tmp.name = data[i].title;
+            tmp.author = data[i].author;
+            tmp.genre = data[i].genres;
+            tmp.rating = parseFloat(data[i].avgRating);
+            tmp_books.push(tmp);
+        }
+        tmp_books.sort((a, b) => a.name.localeCompare(b.name));
+        change_books_to_show(recommended_book_list(tmp_books));
+        return set_books_data(tmp_books);
+    };
+    // set_data();
+    useEffect(() => {
+        set_data();
+    }, []);
+
+    // end changes
+
+    const [books_to_show, change_books_to_show] = useState(
+        recommended_book_list(books)
+    );
+    let bookpage_heading_text = searched_keyword
+        ? 'Showing Search Result for Keyword "' + searched_keyword + '"'
+        : current_genre
+        ? current_genre === "all"
+            ? "Showing All Books"
+            : 'Showing Books Related to "' + current_genre + '"'
+        : "Showing Recommended Books for " + user_name;
+
+    return (
+        <div className="flex flex-col">
+            <MenuBar
+                books={books}
+                change_searched_keyword={change_searched_keyword}
+                change_current_genre={change_current_genre}
+                change_current_page={change_current_genre}
+                change_books_to_show={change_books_to_show}
+                change_is_sorted_by_rating={change_is_sorted_by_rating}
+            />
+            <div className="grid justify-items-stretch grid-cols-2">
+                <div className="flex flex-row bi-bookpage-heading">
+                    <h2 className="text-2xl font-bold dark:text-white">
+                        {bookpage_heading_text}
+                    </h2>
+                    {searched_keyword || current_genre ? (
+                        <button
+                            className="btn btn-sm btn-square btn-outline"
+                            onClick={() => {
+                                change_is_sorted_by_rating(false);
+                                change_books_to_show(
+                                    recommended_book_list(books)
+                                );
+                                change_current_page(1);
+                                if (current_genre) {
+                                    change_current_genre("");
+                                }
+                                if (searched_keyword) {
+                                    change_searched_keyword("");
+                                }
+                            }}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="justify-self-end bi-toggle-button">
+                    <button
+                        className="btn btn-sm rounded-none w-48 h-4"
+                        onClick={() => {
+                            // console.log(is_sorted_by_rating);
+                            change_current_page(1);
+                            const books_to_sort = [...books_to_show];
+                            if (is_sorted_by_rating) {
+                                books_to_sort.sort((a, b) =>
+                                    a.name.localeCompare(b.name)
+                                );
+                            } else {
+                                books_to_sort.sort((a, b) => {
+                                    return a.rating == b.rating
+                                        ? 0
+                                        : a.rating > b.rating
+                                        ? -1
+                                        : 1;
+                                });
+                            }
+                            console.log(books_to_sort);
+                            change_books_to_show(books_to_sort);
+                            change_is_sorted_by_rating(!is_sorted_by_rating);
+                        }}
+                    >
+                        {is_sorted_by_rating
+                            ? "Sorted By Rating"
+                            : "Sorted Alphabetically"}
+                    </button>
+                </div>
+            </div>
+            <div className="bg-[url('./src/assets/bookstore-bg.jpg')]">
+                <MiddleSection
+                    genres={genres}
+                    books={books}
+                    change_current_genre={change_current_genre}
+                    change_searched_keyword={change_searched_keyword}
+                    books_to_show={books_to_show}
+                    change_books_to_show={change_books_to_show}
+                    current_page={current_page}
+                    change_current_page={change_current_page}
+                    change_is_sorted_by_rating={change_is_sorted_by_rating}
+                />
+            </div>
+            <Footer />
+        </div>
+    );
+}

@@ -33,6 +33,13 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     preferredGenres: [{ type: String }],
+    shelves: [
+      {
+        label: { type: String, required: true },
+        isDefault: { type: Boolean, default: false },
+        books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+      },
+    ],
   },
   { timestamps: true }
 );

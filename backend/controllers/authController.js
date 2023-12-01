@@ -22,7 +22,13 @@ export const signupController = async (req, res, next) => {
       next("user already exists");
     }
 
-    const newUser = await User.create({ username, firstName, lastName, email, password, preferredGenres, bio });
+    const shelves = [
+      {label: "To Read", isDefault: true},
+      {label: "Reading", isDefault: true},
+      {label: "Read", isDefault: true},
+    ]
+
+    const newUser = await User.create({ username, firstName, lastName, email, password, preferredGenres, bio, shelves });
     // json token
     const token = newUser.createJWT();
 
@@ -58,6 +64,7 @@ export const loginController = async (req, res, next) => {
 
     // can alternatively use user.comparePassword
     const auth = await bcrypt.compare(password, user.password);
+    console.log(auth)
     if (!auth) {
       return res.json({ message: "Incorrect password or email" });
     }

@@ -41,9 +41,14 @@ export const signupController = async (req, res, next) => {
       success: true,
       message: "User created successfully",
       user: {
+        _id: newUser._id,
         username: newUser.username,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
         email: newUser.email,
+        preferredGenres: newUser.preferredGenres,
       },
+      token
     });
   } catch (error) {
     next(error);

@@ -1,4 +1,3 @@
-// rating controller
 import BookModel from '../models/bookModel.js';
 const { Book ,createNewBook, updateBookById, deleteBookById, getAllBooks, getBookById } = BookModel;
 import Rating from '../models/ratingModel.js';
@@ -91,6 +90,13 @@ const editRating = async (req, res) => {
 
     await book.save();
 
+    //Update in Rating Schema
+    await Rating.findOneAndUpdate(
+      { user: req.username, book: bookId },
+      { rating: rating }, 
+      { new: true } 
+    )
+
     res.status(200).json({
       success: true,
       message: 'Rating updated successfully',
@@ -106,6 +112,61 @@ const editRating = async (req, res) => {
   }
 };
 
+//Delete Rating
+const deleteRating = async (req, res) => {
+  try{
+    const { bookId } = req.body
 
-export { addRating, editRating }
+    //Checking User Input
+    if (!bookId){
+      return res.status(400).json({
+        success : false,
+        message : "Invalid input for bookId"
+      })
+    }
+
+    const book = await Book.findById(bookId)
+    if (!book) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
+
+    //Finding index in book rating array
+    const userRatingIndex = book.ratings.findIndex((r) => r.user === req.username);
+
+    // User's rating exists in the ratings array or not 
+    if (userRatingIndex === -1) {
+      return res.status(400).json({ success: false, message: 'You have not rated this book' });
+    }
+
+    //Removing from ratings array
+    book.ratings.splice(userRatingIndex, 1);
+
+    // Recalculate the average rating
+    const totalRatings = book.ratings.reduce((sum, r) => sum + r.rating, 0);
+    book.avgRating = book.ratings.length > 0 ? totalRatings / book.ratings.length : 0;
+
+    await book.save();
+
+    // Remove the rating from the Rating schema
+
+    const deletedRating = await Rating.findOneAndDelete({ user: req.username, book: bookId });
+    console.log('Deleted Rating:', deletedRating);
+
+    //await Rating.findOneAndDelete({ user: req.username });
+
+    res.status(200).json({
+      success: true,
+      message: 'Rating deleted successfully',
+      avgRating: book.avgRating,
+      ratings: book.ratings,
+    });
+
+  } catch (error) {
+    console.error('Error in delete Rating:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+  
+}
+
+export { addRating, editRating, deleteRating }
 

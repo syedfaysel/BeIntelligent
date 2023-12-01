@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Rating from './ratingModel.js'
+import Rating from './ratingModel.js';
 
 const { Schema } = mongoose;
 
@@ -37,6 +37,9 @@ const bookSchema = new Schema({
     
     ratings: [Rating.schema],
 
+    //reviews: [Review.schema],
+
+    //reviewrating : [ReviewRate.schema],
     avgRating: {
         type: Number,
         default: 0

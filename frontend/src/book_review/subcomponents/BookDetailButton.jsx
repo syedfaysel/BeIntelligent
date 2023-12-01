@@ -4,7 +4,7 @@ const BookDetailButton = ({ book }) => {
     const { imageUrl, title } = book;
     return (
         <div>
-            <div className="bg-white p-4 rounded-xl shadow-xl">
+            <div className="bg-black p-4 rounded-xl shadow-xl">
                 <div className="flex items-center m-4">
                     <img
                         src={imageUrl}

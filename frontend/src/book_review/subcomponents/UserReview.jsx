@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserReview = ({
     userName,
@@ -10,6 +11,8 @@ const UserReview = ({
     const [description, setDescription] = useState(initialDescription);
     const [likesCount, setLikesCount] = useState(initialLikesCount);
     const [liked, setLiked] = useState(false);
+    // console.log(rating);
+    const navigate_to = useNavigate();
 
     const handleLike = () => {
         if (liked) {
@@ -21,29 +24,35 @@ const UserReview = ({
     };
 
     return (
-        <div className="bg-white p-4 rounded-xl shadow-xl">
+        <div className="bg-black p-4 rounded-xl shadow-xl">
             <div className="flex flex-col items-center m-4">
                 <h3 className="text-2xl font-bold mb-4">{userName}</h3>
                 <div className="mb-4">
                     {/* DaisyUI Star Rating */}
-                    <div className="rating rating-lg">
-                        {[1, 2, 3, 4, 5].map((index) => (
-                            <input
-                                key={index}
-                                type="radio"
-                                name={`rating-${userName}`}
-                                className={`mask mask-star-2 bg-orange-400 cursor-pointer ${
-                                    rating >= index ? "checked" : ""
-                                }`}
-                                onChange={() => setRating(index)}
-                            />
-                        ))}
+                    <div className="rating rating-md">
+                        {[1, 2, 3, 4, 5].map((index) => {
+                            // console.log(index, Math.floor(rating));
+                            return (
+                                <input
+                                    key={index}
+                                    type="radio"
+                                    name={`rating-${userName}`}
+                                    className={`mask mask-star-2 bg-orange-400 ${
+                                        Math.floor(rating) == index
+                                            ? "checked"
+                                            : ""
+                                    }`}
+                                    // onChange={() => setRating(index)}
+                                    // disabled
+                                />
+                            );
+                        })}
                     </div>
                 </div>
                 <div className="mb-4">
                     {/* Dummy Book Description (non-editable) */}
                     <textarea
-                        className="w-full h-20 p-2 bg-gray-100 border border-gray-300 rounded-md resize-none"
+                        className="w-96 h-auto p-2 bg-black-100  rounded-md resize-none"
                         value={description}
                         readOnly
                     />
@@ -53,7 +62,20 @@ const UserReview = ({
                         {liked ? "Unlike" : "Like"}
                     </button>
                     <span className="text-sm">{likesCount} Likes</span>
-                    <button className="btn btn-secondary">Edit</button>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={() => {
+                            navigate_to("/editreview", {
+                                state: {
+                                    userName: userName,
+                                    initialRating: initialRating,
+                                    initialDescription: initialDescription,
+                                },
+                            });
+                        }}
+                    >
+                        Edit
+                    </button>
                     <button className="btn btn-danger">Delete</button>
                 </div>
             </div>

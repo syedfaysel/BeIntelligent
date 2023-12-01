@@ -22,7 +22,12 @@ export default function () {
                         <span className="badge">Active</span>
                     </a>
                 </li>
-                <li key="library">
+                <li
+                    key="library"
+                    onClick={() => {
+                        navigate_to("/booklibrary");
+                    }}
+                >
                     <a>Library</a>
                 </li>
                 <li

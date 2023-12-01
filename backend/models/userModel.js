@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
     },
+    preferredGenres: [{ type: String }],
   },
   { timestamps: true }
 );

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 // signup controller ...//
 export const signupController = async (req, res, next) => {
   try {
-    const { username, firstName, lastName, email, password } = req.body;
+    const { username, firstName, lastName, email, password, bio, preferredGenres } = req.body;
     //validate
     if (!username) {
       next("username is required");
@@ -22,7 +22,7 @@ export const signupController = async (req, res, next) => {
       next("user already exists");
     }
 
-    const newUser = await User.create({ username, firstName, lastName, email, password });
+    const newUser = await User.create({ username, firstName, lastName, email, password, preferredGenres, bio });
     // json token
     const token = newUser.createJWT();
 

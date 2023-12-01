@@ -10,11 +10,11 @@ export const endpoints = {
   createBook: "/books/create-book/",
   updateBook: "/books/update-book/",
   deleteBook: "/books/delete-book/",
-  addReview: "/reviews/add-review",
-  editReview : "/reviews/edit-review",
-  deleteReview : "/reviews/delete-review",
-  getReviewsByBookId : "reviews/get-book-reviews",
+  addReview: "/reviews/add-review/",
+  editReview : "/reviews/edit-review/",
+  deleteReview : "/reviews/delete-review/",
+  getReviewsByBookId : "reviews/get-book-reviews/",
   getReviewsByUsername : "reviews/get-user-reviews/",
-  likeReview : '/reviews/like-review/:reviewId', likeReview,
-  dislikeReview : '/reviews/dislike-review/:reviewId'
+  likeReview : '/reviews/like-review/',
+  dislikeReview : '/reviews/dislike-review/'
 }

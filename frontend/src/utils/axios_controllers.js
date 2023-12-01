@@ -17,11 +17,11 @@ export const _userSignup = async function (user) {
     console.log(err.message)
   }
 };
-//test signup
+// //test signup
 // const newUser ={username: "uniquename", firstName: "Faysel", lastName: "Rajo", email:"unique@gmail.com", password: "122345"}
 // _userSignup(newUser).then(data => console.log(data))
 
-//signup//
+// //signup//
 export const _userLogin = async function (credential) {
   const api_endpoint = `${base_url}${endpoints.userLogin}`;
   try {

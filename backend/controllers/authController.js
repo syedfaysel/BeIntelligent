@@ -69,7 +69,7 @@ export const loginController = async (req, res, next) => {
       return res.json({ message: "Incorrect password or email" });
     }
     //after that create a token & send response
-    user.password = undefined; // for security purpose
+    // user.password = undefined; // for security purpose
     const token = user.createJWT();
     res.cookie("token", token, {
       withCredentials: true,

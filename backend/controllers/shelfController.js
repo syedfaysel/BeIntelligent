@@ -4,7 +4,7 @@ import User from "../models/userModel.js";
 // Create a new shelf for a user by username
 export const createShelfByUsername = async (req, res) => {
   console.log(req.params, req.body)
-  const { username } = req.params;
+  const { username } = req.user;
   const { label } = req.body;
 
   try {
@@ -33,8 +33,9 @@ export const createShelfByUsername = async (req, res) => {
 
 
 // Delete a custom shelf for a user
-export const deleteShelf = async (req, res) => {
-  const { username, shelfName } = req.params;
+export const deleteShelf = async (req, res, next) => {
+  const {username} = req.user
+  const { shelfName } = req.params;
 
   try {
     const user = await User.findOne({ username });
@@ -70,7 +71,8 @@ export const deleteShelf = async (req, res) => {
 
 // Add a book to a shelf for a user
 export const addBookToShelf = async (req, res) => {
-  const { username, shelfName } = req.params;
+  const { username } = req.user;
+  const { shelfName } = req.params;
   const { bookId } = req.body; //or use isbn instead
 
   try {
@@ -103,5 +105,31 @@ export const addBookToShelf = async (req, res) => {
   } catch (error) {
     console.error(`Error adding book to shelf: ${error.message}`);
     return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
+
+
+// Get detailed shelves 
+export const getShelves = async (req, res, next) => {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username }).select("-password").populate({
+      path: 'shelves.books',
+      model: 'Book',
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // You now have user details with populated shelf data
+    return res.status(200).json({ "shelves": user.shelves });
+  } catch (error) {
+    // console.error(`Error fetching user details: ${error.message}`);
+    // return res.status(500).json({ error: 'Internal Server Error' });
+    next(error.message)
   }
 }

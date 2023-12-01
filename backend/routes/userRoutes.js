@@ -1,5 +1,5 @@
 import express from "express";
-import { getUserController } from "../controllers/userController.js";
+import { getUserController, getUserDetails } from "../controllers/userController.js";
 
 
 
@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 //routes ....mostly crud
-router.get('/:username', getUserController)
+router.get('/:username', getUserDetails)
 
 
 

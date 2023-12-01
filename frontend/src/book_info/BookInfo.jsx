@@ -1,14 +1,17 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../common_components/Footer";
 import MenuDropdown from "../common_components/MenuDropdown";
 import { useState, useEffect } from "react";
 import "./BookInfo.css";
 
 export default function () {
+    const navigate_to = useNavigate();
     let name, author, rating, genre, image_url, description;
     const [bg_image, set_bg_image] = useState(
         `url('./src/assets/the_foundation_2.jpg')`
     );
+
+    const library_list = ["Want to Read", "Completed", "Reading"];
 
     try {
         const { state } = useLocation();
@@ -98,6 +101,56 @@ export default function () {
                                         {item}
                                     </span>
                                 ))}
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="dropdown dropdown-end dropdown-top">
+                                    <div
+                                        tabIndex={0}
+                                        role="button"
+                                        className="btn bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                    >
+                                        Add to Library
+                                    </div>
+                                    <ul
+                                        tabIndex={0}
+                                        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                                    >
+                                        {library_list.map((item) => (
+                                            <li>
+                                                <a>{item}</a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="dropdown dropdown-end dropdown-top">
+                                    <div
+                                        tabIndex={0}
+                                        role="button"
+                                        className="btn bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                    >
+                                        Delete from Library
+                                    </div>
+                                    <ul
+                                        tabIndex={0}
+                                        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                                    >
+                                        {library_list.map((item) => (
+                                            <li>
+                                                <a>{item}</a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <button
+                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                        onClick={() => {
+                                            navigate_to("/bookreview");
+                                        }}
+                                    >
+                                        Reviews
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

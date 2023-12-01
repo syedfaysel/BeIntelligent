@@ -194,14 +194,24 @@ export default function () {
                                         <button
                                             className="btn btn-sm btn-success rounded-none w-20 h-4"
                                             onClick={() => {
-                                                const tmp_lib = [
-                                                    ...libraryFolder,
-                                                ];
-                                                tmp_lib.push({
-                                                    name: newLibraryName,
-                                                    books: [],
-                                                });
-                                                change_libraryFolder(tmp_lib);
+                                                const ck = libraryFolder.filter(
+                                                    (item) =>
+                                                        item.name ==
+                                                        newLibraryName
+                                                ).length;
+                                                // console.log(ck);
+                                                if (newLibraryName && ck == 0) {
+                                                    const tmp_lib = [
+                                                        ...libraryFolder,
+                                                    ];
+                                                    tmp_lib.push({
+                                                        name: newLibraryName,
+                                                        books: [],
+                                                    });
+                                                    change_libraryFolder(
+                                                        tmp_lib
+                                                    );
+                                                }
                                             }}
                                         >
                                             OK
@@ -226,7 +236,16 @@ export default function () {
                             {libraryFolder
                                 .slice(3, libraryFolder.length)
                                 .map((item) => (
-                                    <li>
+                                    <li
+                                        onClick={() => {
+                                            const tmp_lib =
+                                                libraryFolder.filter(
+                                                    (lib) =>
+                                                        lib.name != item.name
+                                                );
+                                            change_libraryFolder(tmp_lib);
+                                        }}
+                                    >
                                         <a>{item.name}</a>
                                     </li>
                                 ))}

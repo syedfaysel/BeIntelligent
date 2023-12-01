@@ -4,48 +4,27 @@ import Footer from "../common_components/Footer";
 import "./BookSearch.css";
 import { useState, useEffect } from "react";
 
-import { fetchBooks } from "../api_controller/loadBooks";
+// import { fetchBooks } from "../api_controller/loadBooks";
+import { _fetchBooks } from "../utils/axios_controllers";
+import { useLocation } from "react-router-dom";
 
 export default function () {
-    const user_name = "Ahsan Habib";
-    const recommended_genre = ["Thriller"];
+    let user_name, recommended_genre;
+    try {
+        const { state } = useLocation();
+        user_name = state.user_name;
+        recommended_genre = ["Thriller"];
+    } catch (e) {
+        console.log(e);
+        user_name = "Ahsan Habib";
+        recommended_genre = ["Thriller"];
+    }
+
     const [searched_keyword, change_searched_keyword] = useState("");
     const [current_genre, change_current_genre] = useState("");
     const [current_page, change_current_page] = useState(1);
     const [is_sorted_by_rating, change_is_sorted_by_rating] = useState(false);
-    const genres = [
-        "all",
-        "romance",
-        "fiction",
-        "young-adult",
-        "fantasy",
-        "science-fiction",
-        "non-fiction",
-        "children",
-        "history",
-        "mystery",
-        "covers",
-        "horror",
-        "historical-fiction",
-        "best",
-        "gay",
-        "titles",
-        "paranormal",
-        "middle-grade",
-        "love",
-        "contemporary",
-        "historical-romance",
-        "lgbt",
-        "queer",
-        "nonfiction",
-        "thriller",
-        "biography",
-        "women",
-        "series",
-        "lgbtq",
-        "classics",
-        "title-challenge",
-    ];
+    const [genres, set_genres] = useState(["All", "romance"]);
 
     const books_t = [
         {
@@ -53,6 +32,8 @@ export default function () {
             author: "Isaac Asimov",
             rating: 4.8,
             genre: ["romance", "fiction"],
+            cover: "./src/assets/the_foundation_2.jpg",
+            description: "loren ipsam",
         },
     ];
     const [books, set_books_data] = useState([...books_t]);
@@ -68,17 +49,25 @@ export default function () {
     // api changes
     // const books = [];
     const set_data = async () => {
-        const data = await fetchBooks();
-        console.log(data);
+        const data = await _fetchBooks();
+        // console.log(data);
         const tmp_books = [];
+        const tmp_genres = ["All"];
         for (let i = 0; i < data.length; i++) {
             const tmp = {};
             tmp.name = data[i].title;
             tmp.author = data[i].author;
             tmp.genre = data[i].genres;
             tmp.rating = parseFloat(data[i].avgRating);
+            tmp.cover = data[i].image;
+            tmp.description = data[i].description;
             tmp_books.push(tmp);
+            tmp_genres.push(
+                ...data[i].genres.filter((item) => !tmp_genres.includes(item))
+            );
         }
+        // console.log(tmp_genres);
+        set_genres(tmp_genres);
         tmp_books.sort((a, b) => a.name.localeCompare(b.name));
         change_books_to_show(recommended_book_list(tmp_books));
         return set_books_data(tmp_books);
@@ -96,7 +85,7 @@ export default function () {
     let bookpage_heading_text = searched_keyword
         ? 'Showing Search Result for Keyword "' + searched_keyword + '"'
         : current_genre
-        ? current_genre === "all"
+        ? current_genre === "All"
             ? "Showing All Books"
             : 'Showing Books Related to "' + current_genre + '"'
         : "Showing Recommended Books for " + user_name;

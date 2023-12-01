@@ -61,7 +61,7 @@ const addReview = async (req, res) => {
     // Finding all reviews for the book
     const allBookReviews = await Review.find({ book: bookId });
 
-    
+    //Calculating avgRating of the book
     if (allBookReviews.length !== 0) {
       let totalRating = 0;
       let countValidReviews = 0;
@@ -127,8 +127,26 @@ const editReview = async (req, res) => {
     
     await existingReview.save();
 
-    res.status(200).json({ success: true, message: 'Review updated successfully', review: existingReview });
-  } catch (error) {
+    // Finding all reviews for the book
+    const allBookReviews = await Review.find({ book: bookId });
+
+    if (allBookReviews.length !== 0) {
+      let totalRating = 0;
+      let countValidReviews = 0;
+      allBookReviews.forEach((review) => {
+      if (review.rating !== 0) {
+        totalRating += review.rating;
+        countValidReviews += 1;
+      }  
+      }); 
+      if (countValidReviews!==0){
+        const newAvgRating = totalRating / countValidReviews;
+        book.avgRating = newAvgRating;
+        await book.save();
+      }
+    }
+  res.status(200).json({ success: true, message: 'Review updated successfully', review: existingReview });
+} catch (error) {
     console.error('Error in editReview:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
@@ -139,32 +157,94 @@ const deleteReview = async (req, res) => {
   try {
     const { bookId, deleteRating, deleteReviewText } = req.body;
 
+    //Check User Input
     if (!bookId || ((typeof deleteRating !== 'boolean') && (typeof deleteReviewText !== 'boolean'))) {
       return res.status(400).json({
         success: false,
         message: 'Invalid input.'
       });
     }
+
+    //Find Book
+    const book = await Book.findById(bookId);
+
+    //If book does not exist
+    if (!book) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
     
     // Find the existing review
     const existingReview = await Review.findOne({ username: req.username, book: bookId });
 
+    //No review by this user for this book
     if (!existingReview) {
       return res.status(404).json({ success: false, message: 'Review not found' });
     }
+
+    //If both false then nothing should be changed
     if (!deleteRating && !deleteReviewText) {
       return res.status(200).json({ success: true, message: 'No need to delete rating or review', review: existingReview });
     }
 
+    //If both are true then the entire review deleted
     if (deleteRating && deleteReviewText) {
-      // Deleting the entire review
+      const deletedReview = await Review.findByIdAndDelete(existingReview._id);
+
+      if (!deletedReview) {
+        return res.status(404).json({ success: false, message: 'Review not found' });
+      }
+      // Finding all reviews for the book
+      const allBookReviews = await Review.find({ book: bookId });
+
+      //Calculating avgRating
+      if (allBookReviews.length !== 0) {
+        let totalRating = 0;
+        let countValidReviews = 0;
+        allBookReviews.forEach((review) => {
+        if (review.rating !== 0) {
+          totalRating += review.rating;
+          countValidReviews += 1;
+        }  
+        }); 
+        if (countValidReviews!==0){
+          const newAvgRating = totalRating / countValidReviews;
+          book.avgRating = newAvgRating;
+          await book.save();
+        }
+      }
+      return res.status(200).json({ success: true, message: 'Review deleted successfully', review: deletedReview });
+    }
+
+    //If one of them was not present, the other one is true
+    if ((deleteRating && existingReview.reviewText==='')|| (deleteReviewText && existingReview.rating ===0)){
       const deletedReview = await Review.findByIdAndDelete(existingReview._id);
 
       if (!deletedReview) {
         return res.status(404).json({ success: false, message: 'Review not found' });
       }
 
-      return res.status(200).json({ success: true, message: 'Review deleted successfully', review: deletedReview });
+      // Finding all reviews for the book
+      const allBookReviews = await Review.find({ book: bookId });
+      console.log(allBookReviews)
+
+      //Calculating avgRating
+      if (allBookReviews.length !== 0) {
+        let totalRating = 0;
+        let countValidReviews = 0;
+        allBookReviews.forEach((review) => {
+        if (review.rating !== 0) {
+          totalRating += review.rating;
+          countValidReviews += 1;
+        }  
+        }); 
+        if (countValidReviews!==0){
+          const newAvgRating = totalRating / countValidReviews;
+          book.avgRating = newAvgRating;
+          await book.save();
+        }
+      }
+
+      return res.status(200).json({ success: true, message: 'Review deleted since no rating and reviewtext', review: deletedReview });
     }
 
     //Rating will be default one
@@ -178,7 +258,28 @@ const deleteReview = async (req, res) => {
     }
     await existingReview.save();
 
-    res.status(200).json({ success: true, message: 'Review updated successfully', review: existingReview });
+    // Finding all reviews for the book
+    const allBookReviews = await Review.find({ book: bookId });
+    console.log(allBookReviews)
+
+    //Calculating avgRating
+    if (allBookReviews.length !== 0) {
+      let totalRating = 0;
+      let countValidReviews = 0;
+      allBookReviews.forEach((review) => {
+      if (review.rating !== 0) {
+        totalRating += review.rating;
+        countValidReviews += 1;
+      }  
+      }); 
+      if (countValidReviews!==0){
+        const newAvgRating = totalRating / countValidReviews;
+        book.avgRating = newAvgRating;
+        await book.save();
+      }
+    }
+
+    res.status(200).json({ success: true, message: 'Review updated successfully after deletion', review: existingReview });
   } catch (error) {
     console.error('Error in deleteReview:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -286,6 +387,7 @@ const likeReview = async (req, res) => {
         success: false,
         message: 'You have already liked this review',
         likes: review.likes,
+        dislikes : review.dislikes
       });
     }
 
@@ -339,6 +441,7 @@ const dislikeReview = async (req, res) => {
         success: false,
         message: 'You have disliked this review',
         likes: review.likes,
+        dislikes : review.dislikes
       });
     }
 
@@ -356,7 +459,7 @@ const dislikeReview = async (req, res) => {
       success: true,
       message: 'Review disliked successfully',
       review : review,
-      likes: review.dislikes,
+      dislikes: review.dislikes,
     });
   } catch (error) {
     console.error('Error in likeReview:', error);
@@ -366,8 +469,6 @@ const dislikeReview = async (req, res) => {
     });
   }
 };
-
-
 
 export {
   addReview,

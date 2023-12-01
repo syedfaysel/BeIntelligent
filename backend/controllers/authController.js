@@ -91,3 +91,31 @@ export const loginController = async (req, res, next) => {
     next(error);
   }
 };
+
+// update password  // 
+export const updatePassword = async (req, res, next) => {
+  const { username } = req.user;
+  const {oldPassword, newPassword} = req.body
+
+  try {
+    const user = await User.findOne({ username }).select("+password")
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const auth = await bcrypt.compare(oldPassword, user.password);
+    console.log(auth)
+    if (!auth) {
+      return res.json({ message: "Current password invalid" });
+    }
+    // Update the user's password
+    user.password = newPassword;
+    await user.save(); // password will be hashed before saved
+
+    return res.status(200).json({ success: true, message: "Password updated"});
+  } catch (error) {
+    // console.error(`Error fetching user details: ${error.message}`);
+    // return res.status(500).json({ error: 'Internal Server Error' });
+    next(error.message)
+  }
+}

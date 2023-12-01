@@ -241,7 +241,7 @@ const getReviewsByUsername = async (req, res) => {
   }
 };
 
-//Add Like 
+//Like Review
 const likeReview = async (req, res) => {
   try {
     const { reviewId } = req.params;
@@ -294,6 +294,65 @@ const likeReview = async (req, res) => {
   }
 };
 
+//Dislike Review
+const dislikeReview = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+
+    // Find the review by ID
+    const review = await Review.findById(reviewId);
+
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review not found',
+      });
+    }
+
+    const username = req.username;
+
+    //Checking if the user has already disliked the review
+    if (review.dislikes.includes(username)) {
+      return res.status(400).json({
+        success: false,
+        message: 'You have disliked this review',
+        likes: review.likes,
+      });
+    }
+
+    // Checking if the user has liked the review, if yes, remove the like
+    if (review.likes.includes(username)) {
+      const index = review.likes.indexOf(username);
+      review.likes.splice(index, 1);
+    }
+
+    review.dislikes.push(username);
+
+    await review.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Review disliked successfully',
+      review : review,
+      likes: review.dislikes,
+    });
+  } catch (error) {
+    console.error('Error in likeReview:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};
 
 
-export { addReview, editReview, deleteReview, getReviewsByBookId, getReviewsByUsername, likeReview }
+
+export {
+  addReview,
+  editReview,
+  deleteReview, 
+  getReviewsByBookId,
+  getReviewsByUsername, 
+  likeReview,
+  dislikeReview
+} ;

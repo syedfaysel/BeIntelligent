@@ -203,13 +203,13 @@ export default function () {
                                     .showModal()
                             }
                         >
-                            Add Library
+                            Add Shelf
                         </button>
                         <dialog id="my_modal_1" className="modal">
                             <div className="modal-box">
                                 <div className="flex flex-col gap-4">
                                     <h3 className="font-bold text-lg">
-                                        Add a Library
+                                        Add a Shelf
                                     </h3>
                                     <input
                                         value={newLibraryName}
@@ -282,7 +282,7 @@ export default function () {
                             role="button"
                             className="btn btn-sm btn-error rounded-none w-20 h-4"
                         >
-                            Delete Library
+                            Delete Shelf
                         </div>
                         <ul
                             tabIndex={0}

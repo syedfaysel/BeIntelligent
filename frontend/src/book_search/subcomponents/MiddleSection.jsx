@@ -1,4 +1,4 @@
-import BookCards from "./BookCards";
+import BookCards from "../../common_components/BookCards";
 import { useState } from "react";
 
 export default function ({

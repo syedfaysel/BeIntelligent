@@ -60,6 +60,7 @@ export default function () {
     ];
 
     const [libraryFolder, change_libraryFolder] = useState(libraryFolder_t);
+    const [sync_success, change_sync_success] = useState(0);
 
     useEffect(() => {
         set_bg_image(`url('${image_url}')`);
@@ -172,14 +173,30 @@ export default function () {
                                                             item.name,
                                                             b_id
                                                         )
-                                                            .then((data) =>
+                                                            .then((data) => {
+                                                                if (
+                                                                    data.message ==
+                                                                    `Book added to ${item.name} successfully`
+                                                                )
+                                                                    change_sync_success(
+                                                                        1
+                                                                    );
+                                                                else
+                                                                    change_sync_success(
+                                                                        -1
+                                                                    );
                                                                 console.log(
                                                                     data
-                                                                )
-                                                            )
-                                                            .catch((err) =>
-                                                                console.log(err)
-                                                            );
+                                                                );
+                                                            })
+                                                            .catch((err) => {
+                                                                change_sync_success(
+                                                                    -1
+                                                                );
+                                                                console.log(
+                                                                    err
+                                                                );
+                                                            });
                                                     }
                                                 }}
                                             >
@@ -210,14 +227,30 @@ export default function () {
                                                             item.name,
                                                             b_id
                                                         )
-                                                            .then((data) =>
+                                                            .then((data) => {
+                                                                if (
+                                                                    data.message ==
+                                                                    "Book removed from shelf successfully"
+                                                                )
+                                                                    change_sync_success(
+                                                                        1
+                                                                    );
+                                                                else
+                                                                    change_sync_success(
+                                                                        -1
+                                                                    );
                                                                 console.log(
                                                                     data
-                                                                )
-                                                            )
-                                                            .catch((err) =>
-                                                                console.log(err)
-                                                            );
+                                                                );
+                                                            })
+                                                            .catch((err) => {
+                                                                change_sync_success(
+                                                                    -1
+                                                                );
+                                                                console.log(
+                                                                    err
+                                                                );
+                                                            });
                                                     }
                                                 }}
                                             >
@@ -237,6 +270,48 @@ export default function () {
                                     </button>
                                 </div>
                             </div>
+                            {sync_success == 0 ? (
+                                ""
+                            ) : sync_success == 1 ? (
+                                <div
+                                    role="alert"
+                                    className="alert alert-success"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <span>Action Completed Successfully.</span>
+                                </div>
+                            ) : (
+                                <div role="alert" className="alert alert-error">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <span>
+                                        Error! Can't Perform the Action.
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <Footer />

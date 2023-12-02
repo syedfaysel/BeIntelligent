@@ -1,5 +1,5 @@
 .bi-info-page-mid {
-    height: 100vb !important;
+    min-height: 100vb !important;
     margin: 6vh 10vb;
 }
 

@@ -1,7 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ({ name, author, rating, genre, cover, description }) {
+export default function ({
+    name,
+    author,
+    rating,
+    genre,
+    cover,
+    description,
+    b_id,
+}) {
     const image_url = cover;
     const name_mod = name.length > 20 ? name.slice(0, 16) + " ..." : name;
     const author_mod =
@@ -16,6 +24,7 @@ export default function ({ name, author, rating, genre, cover, description }) {
                 console.log(name + " Clicked");
                 navigate("/bookinfo", {
                     state: {
+                        b_id: b_id,
                         name: name,
                         author: author,
                         rating: rating,

@@ -20,6 +20,7 @@ export default function ({ books_to_show, current_page, change_current_page }) {
                             rating={item.rating}
                             genre={item.genre}
                             cover={item.cover}
+                            b_id={item.id}
                             description={item.description}
                         />
                     ))}

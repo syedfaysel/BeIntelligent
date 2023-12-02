@@ -21,6 +21,7 @@ export default function ({ books_to_show, current_page, change_current_page }) {
                             genre={item.genre}
                             cover={item.cover}
                             description={item.description}
+                            b_id={item.id}
                         />
                     ))}
                 </div>

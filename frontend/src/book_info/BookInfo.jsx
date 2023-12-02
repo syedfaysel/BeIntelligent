@@ -6,7 +6,7 @@ import "./BookInfo.css";
 
 export default function () {
     const navigate_to = useNavigate();
-    let name, author, rating, genre, image_url, description;
+    let name, author, rating, genre, image_url, description, b_id;
     const [bg_image, set_bg_image] = useState(
         `url('./src/assets/the_foundation_2.jpg')`
     );
@@ -21,8 +21,10 @@ export default function () {
         rating = state.rating;
         genre = state.genre;
         description = state.description;
-        console.log(state);
+        b_id = state.b_id;
+        console.log(state.b_id);
     } catch (e) {
+        b_id = "foo";
         image_url = "./src/assets/the_foundation_2.jpg";
         name = "The Foundation 3";
         author = "Isaac Asimov";

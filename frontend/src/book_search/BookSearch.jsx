@@ -31,6 +31,7 @@ export default function () {
             name: "The Foundation 1",
             author: "Isaac Asimov",
             rating: 4.8,
+            id: "foo",
             genre: ["romance", "fiction"],
             cover: "./src/assets/the_foundation_2.jpg",
             description: "loren ipsam",
@@ -55,6 +56,7 @@ export default function () {
         const tmp_genres = ["All"];
         for (let i = 0; i < data.length; i++) {
             const tmp = {};
+            tmp.id = data[i]._id;
             tmp.name = data[i].title;
             tmp.author = data[i].author;
             tmp.genre = data[i].genres;

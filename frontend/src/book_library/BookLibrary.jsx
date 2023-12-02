@@ -56,6 +56,7 @@ export default function () {
             name: "The Foundation 1",
             author: "Isaac Asimov",
             rating: 4.8,
+            id: "foo",
             genre: ["romance", "fiction"],
             cover: "./src/assets/the_foundation_2.jpg",
             description: "loren ipsam",

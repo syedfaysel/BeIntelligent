@@ -8,6 +8,8 @@ import gbookRoutes from './gbookRoutes.js';
 import bookRoutes from "./bookRoutes.js"
 import userRoutes from "./userRoutes.js"
 import shelfRoutes from "./shelfRoutes.js"
+import reviewRoutes from './reviewRoutes.js';
+
 
 const router = express.Router();
 
@@ -20,5 +22,8 @@ router.use(`${path}user`, userRoutes);
 
 router.use(`${path}user`, shelfRoutes);
 router.use(`${path}books`, bookRoutes);
+router.use(`${path}reviews`, authMiddleware, reviewRoutes);
+
+
 
 export default router;

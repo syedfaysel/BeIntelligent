@@ -8,8 +8,10 @@ const authMiddleware = (req, res, next) => {
       token = token.split(" ")[1];
       const user = JWT.verify(token, process.env.JWT_SECRET)
       req.user = user;
-
+      req.userid = user.userid 
+      req.username = user.username
       next();
+      
     } else {
       res.status(401).json({
         success: false,

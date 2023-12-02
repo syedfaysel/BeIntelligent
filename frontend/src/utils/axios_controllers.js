@@ -75,7 +75,7 @@ export const _fetchBookById = async function (_id) {
 
 // ------------------ Review ------------------ //
 
-const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTY4YWRjNzdiNGM4ZWU4MjE0ZmMzMTUiLCJlbWFpbCI6InJham9AZ21haWwuY29tIiwidXNlcm5hbWUiOiJmYXlzYWwiLCJpYXQiOjE3MDE0NDk1MDQsImV4cCI6MTcwMTUzNTkwNH0.5Y-EZDSbE9oQSzhzFCx02YFXMXzfYc8LSlfdm3G59Wk"
+const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTZhMGViMDhkODM2ZTFjNTQ0NzA1MGMiLCJlbWFpbCI6ImZheXNlbEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImZheXNlbCIsImlhdCI6MTcwMTUxMDk2MCwiZXhwIjoxNzAxNTk3MzYwfQ.jBUZC4WbNFDM3OSe2d3Ed_dyVPyDya3E_6ozM4FwBKQ"
 
 // add a review //
 export const _addReview = async function (authToken, reviewData ) {
@@ -94,14 +94,14 @@ export const _addReview = async function (authToken, reviewData ) {
       console.log(err.message);
   }
 };
-// test
+// // test
 // const reviewData = {
 //   bookId: "655d0b16ca1df7808c938326",
 //   rating: 4,
-//   review: "Good Book"
+//   reviewText: "It is really a good book"
 // };
 
-// _addReview(reviewData).then(data => console.log(data));
+// _addReview(tempToken, reviewData).then(data => console.log(data));
 
 // edit review //
 export const _editReview = async function (authToken, reviewData) {
@@ -121,14 +121,14 @@ export const _editReview = async function (authToken, reviewData) {
   }
 };
 
-// test
+//test
 // const reviewData = {
 //   bookId: "655d0b16ca1df7808c938326",
 //   rating: 3,
-//   reviewtext: "This is a good book"
+//   reviewText: "This is a good book"
 // };
 
-// _editReview(reviewData).then(data => console.log(data));
+// _editReview(tempToken, reviewData).then(data => console.log(data));
 
 //delete review//
 export const _deleteReview = async function (authToken, reviewData) {
@@ -149,18 +149,16 @@ export const _deleteReview = async function (authToken, reviewData) {
 };
 // test
 // const reviewData = {
-//   bookId: "655d0b16ca1df7808c938326",
+//   "bookId": "655d0b16ca1df7808c938326",
 //   "deleteReviewText" : true,
 //   "deleteRating" : true
 // };
 
-// _deleteReview(reviewData).then(data => console.log(data));
+// _deleteReview(tempToken, reviewData).then(data => console.log(data));
 
 //get review by book id
-export const _getReviewsByBookId = async function (authToken, reviewData) {
-  const api_endpoint = `${base_url}/reviews/get-book-reviews/bookId`;
-
-  // Request headers with Authorization token
+export const _getReviewsByBookId = async function (authToken , bookId) {
+  const api_endpoint = `${base_url}/reviews/get-book-reviews/${bookId}`;
   const headers = {
     Authorization: `Bearer ${authToken}`,
     'Content-Type': 'application/json',
@@ -175,7 +173,7 @@ export const _getReviewsByBookId = async function (authToken, reviewData) {
 };
 
 //test
-//getReviewsByBookId("655d0b16ca1df7808c938326").then(data => console.log(data))
+_getReviewsByBookId(tempToken, "655d0b16ca1df7808c938326").then(data => console.log(data))
 
 //get review by username
 export const _getReviewsByUsername = async function (authToken) {

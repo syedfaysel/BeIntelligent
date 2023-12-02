@@ -3,6 +3,12 @@ import Footer from "../common_components/Footer";
 import MenuDropdown from "../common_components/MenuDropdown";
 import { useState, useEffect } from "react";
 import "./BookInfo.css";
+import login_info from "../login_info";
+import {
+    _addBookToShelf,
+    _getShelves,
+    _removeFromShelf,
+} from "../utils/axios_controllers";
 
 export default function () {
     const navigate_to = useNavigate();
@@ -10,8 +16,6 @@ export default function () {
     const [bg_image, set_bg_image] = useState(
         `url('./src/assets/the_foundation_2.jpg')`
     );
-
-    const library_list = ["Want to Read", "Completed", "Reading"];
 
     try {
         const { state } = useLocation();
@@ -32,8 +36,49 @@ export default function () {
         genre = ["fantasy"];
     }
 
+    const libraryFolder_t = [
+        {
+            name: "To Read",
+            books: ["655b12886c1fab9f95fd40b2", "6568a3f22ca94ac2fa0be2cf"],
+        },
+        {
+            name: "Read",
+            books: ["655b12886c1fab9f95fd40b2", "655c9b2c545a2f3bb0b7c130"],
+        },
+        {
+            name: "Reading",
+            books: ["655b12886c1fab9f95fd40b2", "655cf7b7ea40310f48cf29ee"],
+        },
+        {
+            name: "Custom",
+            books: [
+                "6568a3f22ca94ac2fa0be2cf",
+                "655c9b2c545a2f3bb0b7c130",
+                "655cf7b7ea40310f48cf29ee",
+            ],
+        },
+    ];
+
+    const [libraryFolder, change_libraryFolder] = useState(libraryFolder_t);
+
     useEffect(() => {
         set_bg_image(`url('${image_url}')`);
+
+        if (login_info.user_name) {
+            _getShelves(login_info.user_name).then((data) => {
+                const tmp_data = data.shelves.map((item) => {
+                    // console.log(item.books);
+                    return {
+                        name: item.label,
+                        books: item.books.map((elm) => elm._id),
+                    };
+                });
+                change_libraryFolder(tmp_data);
+                // console.log(tmp_data);
+            });
+        } else {
+            console.log("Not logged in");
+        }
     }, []);
 
     return (
@@ -117,9 +162,28 @@ export default function () {
                                         tabIndex={0}
                                         className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                                     >
-                                        {library_list.map((item) => (
-                                            <li>
-                                                <a>{item}</a>
+                                        {libraryFolder.map((item) => (
+                                            <li
+                                                onClick={() => {
+                                                    if (login_info.user_name) {
+                                                        _addBookToShelf(
+                                                            login_info.token,
+                                                            login_info.user_name,
+                                                            item.name,
+                                                            b_id
+                                                        )
+                                                            .then((data) =>
+                                                                console.log(
+                                                                    data
+                                                                )
+                                                            )
+                                                            .catch((err) =>
+                                                                console.log(err)
+                                                            );
+                                                    }
+                                                }}
+                                            >
+                                                <a>{item.name}</a>
                                             </li>
                                         ))}
                                     </ul>
@@ -136,9 +200,28 @@ export default function () {
                                         tabIndex={0}
                                         className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                                     >
-                                        {library_list.map((item) => (
-                                            <li>
-                                                <a>{item}</a>
+                                        {libraryFolder.map((item) => (
+                                            <li
+                                                onClick={() => {
+                                                    if (login_info.user_name) {
+                                                        _removeFromShelf(
+                                                            login_info.token,
+                                                            login_info.user_name,
+                                                            item.name,
+                                                            b_id
+                                                        )
+                                                            .then((data) =>
+                                                                console.log(
+                                                                    data
+                                                                )
+                                                            )
+                                                            .catch((err) =>
+                                                                console.log(err)
+                                                            );
+                                                    }
+                                                }}
+                                            >
+                                                <a>{item.name}</a>
                                             </li>
                                         ))}
                                     </ul>

@@ -173,7 +173,7 @@ export const _getReviewsByBookId = async function (authToken , bookId) {
 };
 
 //test
-_getReviewsByBookId(tempToken, "655d0b16ca1df7808c938326").then(data => console.log(data))
+// _getReviewsByBookId(tempToken, "655d0b16ca1df7808c938326").then(data => console.log(data))
 
 //get review by username
 export const _getReviewsByUsername = async function (authToken) {

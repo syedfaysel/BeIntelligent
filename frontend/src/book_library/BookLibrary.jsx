@@ -3,18 +3,25 @@ import MiddleSection from "./subcomponents/MiddleSection";
 import Footer from "../common_components/Footer";
 import "./BookLibrary.css";
 import { useState, useEffect } from "react";
+import login_info from "../login_info";
 
 // import { fetchBooks } from "../api_controller/loadBooks";
-import { _fetchBooks } from "../utils/axios_controllers";
+import {
+    _createShelf,
+    _deleteShelf,
+    _fetchBooks,
+    _getShelves,
+} from "../utils/axios_controllers";
 import { useLocation } from "react-router-dom";
 
 export default function () {
+    // console.log(login_info);
     let user_name;
     try {
         const { state } = useLocation();
         user_name = state.user_name;
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         user_name = "Ahsan Habib";
     }
 
@@ -23,11 +30,11 @@ export default function () {
     const [genres, set_genres] = useState(["All", "romance"]);
     const libraryFolder_t = [
         {
-            name: "Want to Read",
+            name: "To Read",
             books: ["655b12886c1fab9f95fd40b2", "6568a3f22ca94ac2fa0be2cf"],
         },
         {
-            name: "Completed",
+            name: "Read",
             books: ["655b12886c1fab9f95fd40b2", "655c9b2c545a2f3bb0b7c130"],
         },
         {
@@ -55,13 +62,15 @@ export default function () {
         },
     ];
     const [libraryFolder, change_libraryFolder] = useState(libraryFolder_t);
+    const [libUpdateTriggered, set_libUpdateTriggered] = useState(0);
+
     const [newLibraryName, set_newLibraryName] = useState("");
     const [books, set_books_data] = useState([...books_t]);
     // api changes
     // const books = [];
     const set_data = async () => {
         const data = await _fetchBooks();
-        console.log(data);
+        // console.log(data);
         const tmp_books = [];
         const tmp_genres = ["All"];
         for (let i = 0; i < data.length; i++) {
@@ -80,14 +89,43 @@ export default function () {
         }
         // console.log(tmp_genres);
         set_genres(tmp_genres);
-        change_books_to_show(tmp_books);
+        // change_books_to_show(tmp_books);
         tmp_books.sort((a, b) => a.name.localeCompare(b.name));
-        return set_books_data(tmp_books);
+        set_books_data(tmp_books);
+    };
+
+    const set_shelves = async () => {
+        if (login_info.user_name) {
+            _getShelves(login_info.user_name).then((data) => {
+                const tmp_data = data.shelves.map((item) => {
+                    // console.log(item.books);
+                    return {
+                        name: item.label,
+                        books: item.books.map((elm) => elm._id),
+                    };
+                });
+                change_libraryFolder(tmp_data);
+                // console.log(tmp_data);
+            });
+        } else {
+            console.log("Not logged in");
+        }
     };
     // set_data();
     useEffect(() => {
         set_data();
     }, []);
+    useEffect(() => {
+        const filtered_book = books.filter((item) => {
+            // console.log(item.id);
+            return libraryFolder[0].books.includes(item.id);
+        });
+        change_books_to_show(filtered_book);
+    }, [books]);
+
+    useEffect(() => {
+        set_shelves();
+    }, [libUpdateTriggered]);
 
     const handleInputChange = (set_func) => {
         return (event) => set_func(event.target.value);
@@ -201,6 +239,22 @@ export default function () {
                                                 ).length;
                                                 // console.log(ck);
                                                 if (newLibraryName && ck == 0) {
+                                                    if (login_info.user_name) {
+                                                        _createShelf(
+                                                            login_info.token,
+                                                            login_info.user_name,
+                                                            newLibraryName
+                                                        )
+                                                            .then((data) =>
+                                                                set_libUpdateTriggered(
+                                                                    libUpdateTriggered +
+                                                                        1
+                                                                )
+                                                            )
+                                                            .catch((err) =>
+                                                                console.log(err)
+                                                            );
+                                                    }
                                                     const tmp_lib = [
                                                         ...libraryFolder,
                                                     ];
@@ -238,6 +292,24 @@ export default function () {
                                 .map((item) => (
                                     <li
                                         onClick={() => {
+                                            if (login_info.user_name) {
+                                                _deleteShelf(
+                                                    login_info.token,
+                                                    login_info.user_name,
+                                                    item.name
+                                                )
+                                                    .then((data) => {
+                                                        console.log(data);
+                                                        set_libUpdateTriggered(
+                                                            libUpdateTriggered +
+                                                                1
+                                                        );
+                                                    })
+                                                    .catch((err) =>
+                                                        console.log(err)
+                                                    );
+                                            }
+
                                             const tmp_lib =
                                                 libraryFolder.filter(
                                                     (lib) =>

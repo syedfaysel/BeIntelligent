@@ -26,6 +26,4 @@ router.use(`${path}books`, bookRoutes);
 router.use(`${path}reviews`, authMiddleware, reviewRoutes);
 router.use(`${path}challenges`, authMiddleware, challengeRoutes)
 
-
-
 export default router;

@@ -24,6 +24,10 @@ const challengeSchema = new Schema({
         type : Number,
         default : 0,
     },
+    challengeStart: {
+        type: Date,
+        default: new Date().toLocaleDateString('en-GB'),
+    },
 }, { timestamps: true });
 
 const Challenge = mongoose.model('Challenge', challengeSchema);

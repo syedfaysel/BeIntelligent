@@ -61,6 +61,10 @@ const addTargetBooks = async (req, res) => {
       const currentYear = new Date().getFullYear();
   
       let existingChallenge = await Challenge.findOne({ username, year: currentYear });
+
+      if (existingChallenge.targetBooks!==0){
+        return res.status(404).json({ success: false, message: 'Target Has already been added' });
+      }
   
       if (!existingChallenge) {
         existingChallenge = new Challenge({
@@ -75,6 +79,7 @@ const addTargetBooks = async (req, res) => {
       }
   
       existingChallenge.targetBooks = targetBooks;
+      
       await existingChallenge.save();
   
       const response = {
@@ -121,12 +126,15 @@ const updateTargetBooks = async (req, res) => {
             return res.status(404).json({ success: false, message: 'No Challenge exists for this user' });
         }
 
+        updatedChallenge.progress = ((updatedChallenge.completedBooks/updatedChallenge.targetBooks)*100).toFixed(2);
+        await updatedChallenge.save();
+
         const response = {
             username: updatedChallenge.username,
             year: updatedChallenge.year,
             targetBooks: updatedChallenge.targetBooks,
             completedBooks: updatedChallenge.completedBooks,
-            progress: updatedChallenge.progress,
+            progress: updatedChallenge.progress+ '%',
             challengeStart: updatedChallenge.challengeStart.toLocaleDateString('en-GB'),
             challengeEnd : updatedChallenge.challengeEnd.toLocaleDateString('en-GB')
         };
@@ -193,7 +201,7 @@ const addCompletedBooks = async (req, res) => {
 
       updatedChallenge.progress = ((completedBooks/updatedChallenge.targetBooks)*100).toFixed(2);
       await updatedChallenge.save();
-      console.log(updatedChallenge.book)
+     
 
       const response = {
         username: updatedChallenge.username,

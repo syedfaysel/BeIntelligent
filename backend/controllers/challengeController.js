@@ -46,7 +46,7 @@ const getChallenge = async (req, res) => {
   }
 };
 
-
+// Add target Number of books 
 const addTargetBooks = async (req, res) => {
     const { username } = req.user;
     const { targetBooks } = req.body;
@@ -83,12 +83,13 @@ const addTargetBooks = async (req, res) => {
         targetBooks: existingChallenge.targetBooks,
         completedBooks: existingChallenge.completedBooks,
         progress: existingChallenge.progress,
-        challengeStart : new Date().toLocaleDateString('en-GB')
+        challengeStart : new Date().toLocaleDateString('en-GB'),
+        challengeEnd : existingChallenge.challengeEnd.toLocaleDateString('en-GB')
       };
   
       return res.status(200).json({
         success: true,
-        message: 'Target number of books added or updated for the yearly challenge',
+        message: 'Target number of books added for the yearly challenge',
         challengeDetails: response,
       });
     } catch (error) {
@@ -97,6 +98,7 @@ const addTargetBooks = async (req, res) => {
     }
 };
 
+//Edit/update Target Number of books
 const updateTargetBooks = async (req, res) => {
     const { username } = req.user;
     const { targetBooks } = req.body;
@@ -126,6 +128,7 @@ const updateTargetBooks = async (req, res) => {
             completedBooks: updatedChallenge.completedBooks,
             progress: updatedChallenge.progress,
             challengeStart: updatedChallenge.challengeStart.toLocaleDateString('en-GB'),
+            challengeEnd : updatedChallenge.challengeEnd.toLocaleDateString('en-GB')
         };
 
         return res.status(200).json({
@@ -139,6 +142,7 @@ const updateTargetBooks = async (req, res) => {
     }
 };
 
+//Delete Challenge
 const deleteChallenge = async (req, res) => {
   const { username } = req.user;
 
@@ -160,54 +164,56 @@ const deleteChallenge = async (req, res) => {
   }
 };
 
+//Add completed books
+const addCompletedBooks = async (req, res) => {
+    const { username } = req.user;
+    const { completedBooks } = req.body;
+  
+    try {
+      const user = await User.findOne({ username });
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      const currentYear = new Date().getFullYear();
+  
+      const updatedChallenge = await Challenge.findOneAndUpdate(
+        { username, year: currentYear },
+        { $set: { completedBooks } },
+        { new: true }
+      );
 
+      if (!updatedChallenge) {
+        return res.status(404).json({ success: false, message: 'No Challenge exists for this user' });
+      }
+      
+      if (updatedChallenge && updatedChallenge.targetBooks===0){
+        return res.status(404).json({ success: false, message: 'Target has not been set yet' });
+      }
 
-// const deleteTargetBooks = async (req, res) => {
-//     const { username } = req.user;
-  
-//     try {
-//       const user = await User.findOne({ username });
-  
-//       if (!user) {
-//         return res.status(404).json({ success: false, message: 'User not found' });
-//       }
-  
-//       const currentYear = new Date().getFullYear();
-  
-//       const existingChallenge = await Challenge.findOne({ username, year: currentYear });
-  
-//       if (!existingChallenge) {
-//         return res.status(404).json({ success: false, message: 'No Challenge exists for this user' });
-//       }
-  
-//       if (existingChallenge.targetBooks === 0) {
-//         return res.status(404).json({ success: false, message: 'Target has not been added' });
-//       }
-  
-//       existingChallenge.targetBooks = 0;
-//       await existingChallenge.save();
-  
-//       const response = {
-//         username: existingChallenge.username,
-//         year: existingChallenge.year,
-//         targetBooks: existingChallenge.targetBooks,
-//         completedBooks: existingChallenge.completedBooks,
-//         progress: existingChallenge.progress,
-//       };
-  
-//       return res.status(200).json({
-//         success: true,
-//         message: 'Target number of books deleted for the yearly challenge',
-//         challengeDetails: response,
-//       });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ success: false, message: 'Internal Server error' });
-//     }
-// };
+      updatedChallenge.progress = ((completedBooks/updatedChallenge.targetBooks)*100).toFixed(2);
+      await updatedChallenge.save();
+      console.log(updatedChallenge.book)
 
+      const response = {
+        username: updatedChallenge.username,
+        year: updatedChallenge.year,
+        targetBooks: updatedChallenge.targetBooks,
+        completedBooks: updatedChallenge.completedBooks,
+        progress: updatedChallenge.progress + '%',
+        challengeStart: updatedChallenge.challengeStart.toLocaleDateString('en-GB'),
+        challengeEnd : updatedChallenge.challengeEnd.toLocaleDateString('en-GB')
+      };
 
-  
-  
-  
-export { getChallenge, addTargetBooks, updateTargetBooks, deleteChallenge };
+      return res.status(200).json({
+        success: true,
+        message: 'Completed Number books added for the yearly challenge',
+        challengeDetails: response,
+      });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal Server error' });
+    }
+};
+
+export { getChallenge, addTargetBooks, updateTargetBooks, deleteChallenge, addCompletedBooks};

@@ -28,6 +28,10 @@ const challengeSchema = new Schema({
         type: Date,
         default: new Date().toLocaleDateString('en-GB'),
     },
+    challengeEnd: {
+        type: Date,
+        default: new Date(new Date().getFullYear(), 11, 31, 23, 59, 59, 999),
+    },
 }, { timestamps: true });
 
 const Challenge = mongoose.model('Challenge', challengeSchema);

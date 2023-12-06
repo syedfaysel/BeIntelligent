@@ -31,7 +31,6 @@ export const createShelfByUsername = async (req, res, next) => {
 }
 
 
-
 // Delete a custom shelf for a user
 export const deleteShelf = async (req, res, next) => {
   const {username} = req.user

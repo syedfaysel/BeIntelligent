@@ -61,10 +61,6 @@ const addTargetBooks = async (req, res) => {
       const currentYear = new Date().getFullYear();
   
       let existingChallenge = await Challenge.findOne({ username, year: currentYear });
-
-      if (existingChallenge.targetBooks!==0){
-        return res.status(404).json({ success: false, message: 'Target Has already been added' });
-      }
   
       if (!existingChallenge) {
         existingChallenge = new Challenge({
@@ -76,6 +72,10 @@ const addTargetBooks = async (req, res) => {
           challengeStart: new Date().toLocaleDateString('en-GB')
         });
 
+      }
+
+      if (existingChallenge.targetBooks!==0){
+        return res.status(404).json({ success: false, message: 'Target Has already been added' });
       }
   
       existingChallenge.targetBooks = targetBooks;
@@ -172,73 +172,33 @@ const deleteChallenge = async (req, res) => {
   }
 };
 
-//Add completed books
-const addCompletedBooks = async (req, res) => {
-    const { username } = req.user;
-    const { completedBooks } = req.body;
-  
-    try {
-      const user = await User.findOne({ username });
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found' });
-      }
-      const currentYear = new Date().getFullYear();
-  
-      const updatedChallenge = await Challenge.findOneAndUpdate(
-        { username, year: currentYear },
-        { $set: { completedBooks } },
-        { new: true }
-      );
-
-      if (!updatedChallenge) {
-        return res.status(404).json({ success: false, message: 'No Challenge exists for this user' });
-      }
-      
-      if (updatedChallenge && updatedChallenge.targetBooks===0){
-        return res.status(404).json({ success: false, message: 'Target has not been set yet' });
-      }
-
-      updatedChallenge.progress = ((completedBooks/updatedChallenge.targetBooks)*100).toFixed(2);
-      await updatedChallenge.save();
-     
-
-      const response = {
-        username: updatedChallenge.username,
-        year: updatedChallenge.year,
-        targetBooks: updatedChallenge.targetBooks,
-        completedBooks: updatedChallenge.completedBooks,
-        progress: updatedChallenge.progress + '%',
-        challengeStart: updatedChallenge.challengeStart.toLocaleDateString('en-GB'),
-        challengeEnd : updatedChallenge.challengeEnd.toLocaleDateString('en-GB')
-      };
-
-      return res.status(200).json({
-        success: true,
-        message: 'Completed Number books added for the yearly challenge',
-        challengeDetails: response,
-      });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Internal Server error' });
-    }
-};
-
-export { getChallenge, addTargetBooks, updateTargetBooks, deleteChallenge, addCompletedBooks};
-
 
 // update progress
-
 export const updateProgress = async (username, flag) => {
   const currentYear = new Date().getFullYear();
-  const existingChallenge = await Challenge.findOne({ username, year: currentYear });
-  if (flag) {
-    existingChallenge.completedBooks += 1;
-  } else {
-    existingChallenge.completedBooks -= 1;
+  try{
+    const existingChallenge = await Challenge.findOne({ username, year: currentYear });
+    if (existingChallenge && existingChallenge.targetBooks!==0){
+      if (flag) {
+        existingChallenge.completedBooks += 1;
+      } else {
+        existingChallenge.completedBooks -= 1;
+        if (existingChallenge.completedBooks <0 ) {
+          existingChallenge.completedBooks = 0
+        }
+      }
+      existingChallenge.progress = ((existingChallenge.completedBooks/existingChallenge.targetBooks)*100).toFixed(2);
+    
+      await existingChallenge.save();
+    }else{
+      console.log("No challenge exists for this user")
+    }
+    
+  }catch(error){
+    console.log("Update Progress Error")
   }
-
-
-  await existingChallenge.save();
-
+  
 }
+
+export { getChallenge, addTargetBooks, updateTargetBooks, deleteChallenge };
+

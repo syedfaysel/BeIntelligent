@@ -55,6 +55,7 @@ export default function () {
         const tmp_books = [];
         const tmp_genres = ["All"];
         for (let i = 0; i < data.length; i++) {
+            console.log(data);
             const tmp = {};
             tmp.id = data[i]._id;
             tmp.name = data[i].title;

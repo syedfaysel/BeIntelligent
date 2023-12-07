@@ -16,7 +16,12 @@ export default function () {
                 tabIndex={0}
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
-                <li key="profile">
+                <li
+                    key="profile"
+                    onClick={() => {
+                        navigate_to("/userprofile");
+                    }}
+                >
                     <a className="justify-between">
                         Profile
                         <span className="badge">Active</span>
@@ -38,7 +43,12 @@ export default function () {
                 >
                     <a>Book List</a>
                 </li>
-                <li key="challenges">
+                <li
+                    key="challenges"
+                    onClick={() => {
+                        navigate_to("/challenges");
+                    }}
+                >
                     <a>Challenges</a>
                 </li>
                 <li

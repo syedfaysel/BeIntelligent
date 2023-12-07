@@ -99,10 +99,10 @@ export default function () {
         if (login_info.user_name) {
             _getShelves(login_info.user_name).then((data) => {
                 const tmp_data = data.shelves.map((item) => {
-                    // console.log(item.books);
+                    console.log(item.books);
                     return {
                         name: item.label,
-                        books: item.books.map((elm) => elm._id),
+                        books: item.books.map((elm) => elm.book),
                     };
                 });
                 change_libraryFolder(tmp_data);

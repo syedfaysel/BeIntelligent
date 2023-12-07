@@ -71,7 +71,7 @@ export default function () {
                     // console.log(item.books);
                     return {
                         name: item.label,
-                        books: item.books.map((elm) => elm._id),
+                        books: item.books.map((elm) => elm.book),
                     };
                 });
                 change_libraryFolder(tmp_data);
@@ -166,6 +166,10 @@ export default function () {
                                         {libraryFolder.map((item) => (
                                             <li
                                                 onClick={() => {
+                                                    console.log(
+                                                        item.name,
+                                                        b_id
+                                                    );
                                                     if (login_info.user_name) {
                                                         _addBookToShelf(
                                                             login_info.token,
@@ -221,6 +225,10 @@ export default function () {
                                             <li
                                                 onClick={() => {
                                                     if (login_info.user_name) {
+                                                        console.log(
+                                                            item.name,
+                                                            b_id
+                                                        );
                                                         _removeFromShelf(
                                                             login_info.token,
                                                             login_info.user_name,

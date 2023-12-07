@@ -162,8 +162,7 @@ export const _removeFromShelf = async function (authToken,username, label, bookI
 
 // ------------------ Review ------------------ //
 
-const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTZhMGViMDhkODM2ZTFjNTQ0NzA1MGMiLCJlbWFpbCI6ImZheXNlbEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImZheXNlbCIsImlhdCI6MTcwMTUxMDk2MCwiZXhwIjoxNzAxNTk3MzYwfQ.jBUZC4WbNFDM3OSe2d3Ed_dyVPyDya3E_6ozM4FwBKQ"
-
+const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTY4Yzk3ODEyOGRmNzhlZjMzNTc4ZDMiLCJlbWFpbCI6InNvdW1pdHJhMjBAZ21haWwuY29tIiwidXNlcm5hbWUiOiJzb3VtaXRyYWRhcyIsImlhdCI6MTcwMTk2ODY4NiwiZXhwIjoxNzAyMDU1MDg2fQ.57XSOQQbyJZ4_XyNl6OWQxzst6c_SYLRXe1j_Yo6dRI"
 // add a review //
 export const _addReview = async function (authToken, reviewData ) {
   const api_endpoint = `${base_url}/reviews/add-review`;
@@ -320,3 +319,121 @@ export const _dislikeReview = async function (authToken){
 
 //test
 //dislikeReview("656a22401c76b05b0b2047c0").then(data => console.log(data))
+
+// get user challenge details //
+export const _getChallenge = async function (authToken) {
+  const api_endpoint = `${base_url}/challenges/get-challenge`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.get(api_endpoint, {headers});
+    
+      return response.data;
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test get Challenge
+// _getChallenge(tempToken).then(data => console.log(data));
+
+
+// add target number of books //
+export const _addTargetBooks = async function (authToken, targetData ) {
+  const api_endpoint = `${base_url}/challenges/add-target-books`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.post(api_endpoint, targetData, {headers});
+      return response.data; 
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+//test
+// const targetData = {
+//   "targetBooks" : 5
+// };
+
+// _addTargetBooks(tempToken, targetData).then(data => console.log(data));
+
+// update target number of books //
+export const _updateTargetBooks = async function (authToken, targetData) {
+  const api_endpoint = `${base_url}/challenges/update-target-books`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.patch(api_endpoint, targetData, {headers});
+      return response.data; 
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+// const targetData = {
+//   "targetBooks" : 3
+// };
+
+// _editReview(tempToken, targetData).then(data => console.log(data));
+
+// delete challenge //
+export const _deleteChallnge = async function (authToken) {
+  const api_endpoint = `${base_url}/challeneges/delete-challenge`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.delete(api_endpoint, {headers});
+      return response.data; 
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+// test
+// _deleteChallenge(tmpToken).then(data => console.log(data))
+
+
+// add completed number of books and progress calculation
+export const _addCompletedBooks = async function (authToken, targetData ) {
+  const api_endpoint = `${base_url}/challenges/add-comp-books`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.post(api_endpoint, completedBookData, {headers});
+      return response.data; 
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+// test
+// const completedBookData = {
+//   "completedBooks" : 1
+// };
+
+// _addCompletedBooks(tempToken, completedBookData).then(data => console.log(data));
+
+
+
+

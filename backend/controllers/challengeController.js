@@ -1,4 +1,4 @@
-import Challenge from '../models/ChallengeModel.js';
+import Challenge from '../models/challengeModel.js';
 import User from "../models/userModel.js";
 
 //User can see yearly challenge

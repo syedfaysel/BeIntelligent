@@ -410,29 +410,7 @@ export const _deleteChallnge = async function (authToken) {
 // _deleteChallenge(tmpToken).then(data => console.log(data))
 
 
-// add completed number of books and progress calculation
-export const _addCompletedBooks = async function (authToken, targetData ) {
-  const api_endpoint = `${base_url}/challenges/add-comp-books`;
 
-  // Request headers with Authorization token
-  const headers = {
-    Authorization: `Bearer ${authToken}`,
-    'Content-Type': 'application/json',
-  };
-  try {
-    const response = await axios.post(api_endpoint, completedBookData, {headers});
-      return response.data; 
-  } catch (err) {
-      console.log(err.message);
-  }
-};
-
-// test
-// const completedBookData = {
-//   "completedBooks" : 1
-// };
-
-// _addCompletedBooks(tempToken, completedBookData).then(data => console.log(data));
 
 
 

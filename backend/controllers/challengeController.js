@@ -156,7 +156,7 @@ const deleteChallenge = async (req, res) => {
 
   try {
     const existingChallenge = await Challenge.findOneAndDelete({ username });
-
+    
     if (!existingChallenge) {
       return res.status(404).json({ success: false, message: 'No Challenge exists for this user' });
     }

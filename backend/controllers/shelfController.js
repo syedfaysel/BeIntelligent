@@ -1,4 +1,6 @@
+import { Query } from "mongoose";
 import User from "../models/userModel.js";
+import { updateProgress } from "./challengeController.js";
 
 
 // Create a new shelf for a user by username
@@ -72,7 +74,7 @@ export const deleteShelf = async (req, res, next) => {
 export const addBookToShelf = async (req, res) => {
   const { username } = req.user;
   const { shelfName } = req.params;
-  const { bookId } = req.body; //or use isbn instead
+  const { bookId, dateStarted, dateFinished, pageProgress } = req.body; //or use isbn instead
 
   try {
     const user = await User.findOne({ username });
@@ -89,12 +91,34 @@ export const addBookToShelf = async (req, res) => {
     }
 
     // Check if the book is already in the shelf
-    if (shelf.books.includes(bookId)) {
+    if (shelf.books.some((b) => b.book.equals(bookId))) {
       return res.status(400).json({ error: 'Book already in the shelf' });
     }
 
+    // create the comprehensive QueryObject: 
+    const QueryObj = { book: bookId };
+
+    // check if the shelf is `Read` & year is current year-> increase progress
+    
+    if (shelfName === 'Read') {
+      QueryObj.dateStarted = new Date(dateStarted);
+      QueryObj.dateFinished = new Date(dateFinished);
+      
+      // call a function from takeChallenge
+      await updateProgress(user.username, true)
+    }
+    if (shelfName === "Reading") {
+      //only datestarted and page
+      
+
+      QueryObj.dateStarted = dateStarted;
+      QueryObj.pageProgress = pageProgress;
+      // call a function from takeChallenge
+      await updateProgress(user.username, false)
+    }
+
     // Add the book to the shelf
-    shelf.books.push(bookId);
+    shelf.books.push(QueryObj);
     await user.save();
 
     return res.status(200).json({

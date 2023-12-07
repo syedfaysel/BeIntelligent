@@ -1,4 +1,4 @@
-import Challenge from '../models/ChallengeModel.js';
+import Challenge from '../models/challengeModel.js';
 import User from "../models/userModel.js";
 
 //User can see yearly challenge
@@ -225,3 +225,20 @@ const addCompletedBooks = async (req, res) => {
 };
 
 export { getChallenge, addTargetBooks, updateTargetBooks, deleteChallenge, addCompletedBooks};
+
+
+// update progress
+
+export const updateProgress = async (username, flag) => {
+  const currentYear = new Date().getFullYear();
+  const existingChallenge = await Challenge.findOne({ username, year: currentYear });
+  if (flag) {
+    existingChallenge.completedBooks += 1;
+  } else {
+    existingChallenge.completedBooks -= 1;
+  }
+
+
+  await existingChallenge.save();
+
+}

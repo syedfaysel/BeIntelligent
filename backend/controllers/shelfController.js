@@ -147,7 +147,7 @@ export const removeBookFromShelf = async (req, res, next) => {
     }
 
     // Find the book in the shelf
-    const bookIndex = user.shelves[shelfIndex].books.findIndex((book) => book.equals(bookId));
+    const bookIndex = user.shelves[shelfIndex].books.findIndex((book) => book.book.equals(bookId));
 
     if (bookIndex === -1) {
       return res.status(404).json({ error: 'Book not found in the shelf' });

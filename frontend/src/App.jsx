@@ -6,6 +6,7 @@ import BookInfo from "./book_info/BookInfo";
 import BookReview from "./book_review/BookReview";
 import EditReview from "./book_review/EditReview";
 import BookSearch from "./book_search/BookSearch";
+import UserProfile from "./user_profile/UserProfile";
 export default function () {
     return (
         <Routes>
@@ -13,6 +14,7 @@ export default function () {
             <Route path="/bookinfo" element={<BookInfo />} />
             <Route path="/bookreview" element={<BookReview />} />
             <Route path="/editreview" element={<EditReview />} />
+            <Route path="/userprofile" element={<UserProfile />} />
 
             <Route path="login" element={<Login />}></Route>
             <Route path="register" element={<Register />}></Route>

@@ -101,18 +101,26 @@ export const addBookToShelf = async (req, res) => {
     // check if the shelf is `Read` & year is current year-> increase progress
     
     if (shelfName === 'Read') {
-      QueryObj.dateStarted = new Date(dateStarted);
-      QueryObj.dateFinished = new Date(dateFinished);
+      // if (!dateStarted) {
+      //   dateStarted = new Date("1-1-2023")
+      // }
+      // if (!dateFinished) {
+      //   dateFinished = new Date("6-6-2023")
+      // }
+      QueryObj.dateStarted = new Date(dateStarted || "1-2-2023") ;
+      QueryObj.dateFinished = new Date(dateFinished || "6-6-2023");
       
       // call a function from takeChallenge
       await updateProgress(user.username, true)
     }
     if (shelfName === "Reading") {
       //only datestarted and page
+      // if (!dateStarted) {
+      //   dateStarted = new Date("1-1-2023")
+      // }
       
-
-      QueryObj.dateStarted = dateStarted;
-      QueryObj.pageProgress = pageProgress;
+      QueryObj.dateStarted = new Date(dateStarted || "1-2-2023");
+      QueryObj.pageProgress = pageProgress || 1;
       // call a function from takeChallenge
       await updateProgress(user.username, false)
     }

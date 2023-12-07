@@ -37,7 +37,16 @@ const userSchema = new mongoose.Schema(
       {
         label: { type: String, required: true },
         isDefault: { type: Boolean, default: false },
-        books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+        books: [
+          {
+            book: {
+              type: mongoose.Schema.Types.ObjectId, ref: 'Book'
+            },
+            dateStarted: { type: Date, default: null },
+            dateFinished: { type: Date, default: null },
+            pageProgress: {type: Number, default: null}
+          }
+        ],
       },
     ],
   },

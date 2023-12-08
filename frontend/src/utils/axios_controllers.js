@@ -225,14 +225,19 @@ export const _deleteReview = async function (authToken, reviewData) {
     Authorization: `Bearer ${authToken}`,
     'Content-Type': 'application/json',
   };
+
   try {
-    const response = await axios.delete(api_endpoint, reviewData, {headers});
-    // console.log(response)
-      return response.data; //returns a success message
+    const response = await axios.delete(api_endpoint, {
+      headers,
+      data: reviewData, 
+    });
+    
+    return response.data;
   } catch (err) {
-      console.log(err.message);
+    console.log(err.message);
   }
 };
+
 // test
 // const reviewData = {
 //   "bookId": "655d0b16ca1df7808c938326",
@@ -241,6 +246,7 @@ export const _deleteReview = async function (authToken, reviewData) {
 // };
 
 // _deleteReview(tempToken, reviewData).then(data => console.log(data));
+
 
 //get review by book id
 export const _getReviewsByBookId = async function (authToken , bookId) {
@@ -390,6 +396,7 @@ export const _updateTargetBooks = async function (authToken, targetData) {
 
 // _updateTargetBooks(tempToken, targetData).then(data => console.log(data));
 
+
 // delete challenge //
 export const _deleteChallenge = async function (authToken) {
   const api_endpoint = `${base_url}/challenges/delete-challenge`;
@@ -401,15 +408,27 @@ export const _deleteChallenge = async function (authToken) {
   };
   try {
     const response = await axios.delete(api_endpoint, { headers });
+    console.log('Request Headers:', headers);
     console.log('Response:', response);
-      return response.data;
+    return response.data;
   } catch (err) {
-      console.log(err.message);
+    console.error('Error:', err.message);
+    if (err.response) {
+      console.log('Response Data:', err.response.data);
+    }
   }
+  
+  // try {
+  //   const response = await axios.delete(api_endpoint, { headers });
+  //   console.log('Response:', response);
+  //     return response.data;
+  // } catch (err) {
+  //     console.log(err.message);
+  // }
 };
 
 // test
-//_deleteChallenge(tmpToken).then(data => console.log(data))
+_deleteChallenge(tempToken).then(data => console.log(data))
 
 
 

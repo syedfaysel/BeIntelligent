@@ -162,7 +162,7 @@ export const _removeFromShelf = async function (authToken,username, label, bookI
 
 // ------------------ Review ------------------ //
 
-const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTcyMTAyM2IwYzJmMzkwZjU5NjA4M2IiLCJlbWFpbCI6InN5ZWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyYWpvIiwiaWF0IjoxNzAxOTc0MTM4LCJleHAiOjE3MDIwNjA1Mzh9.biSmai7xqw8u32ipn6X3-FF_x6o1mGi9J208YuJPv0g"
+const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTcyMjNhOTVjMjQ5OTY2NTY0ODU1NTgiLCJlbWFpbCI6ImFiY0BhYmMuY29tIiwidXNlcm5hbWUiOiJhYmMiLCJpYXQiOjE3MDIwMjEwMzQsImV4cCI6MTcwMjEwNzQzNH0.HvYkabE8hjO7bEedUBzmq5f98NMAhs-7Lb_slERbwD4"
 // add a review //
 export const _addReview = async function (authToken, reviewData ) {
   const api_endpoint = `${base_url}/reviews/add-review`;
@@ -431,6 +431,30 @@ export const _deleteChallenge = async function (authToken) {
 //_deleteChallenge(tempToken).then(data => console.log(data))
 
 
+
+//update user //
+export const _updateUser = async function (authToken, username, editedData) {
+  //edited data can optionally contain firstName, lastName, email, bio, preferredGenres
+  const api_endpoint = `${base_url}/user/${username}`;
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  }
+  try {
+    const response = await axios.put(api_endpoint, editedData, {headers});
+      return response.data; //retruns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+// tested
+// const editedData = {
+//   "firstName": "Md ABCD",
+//   "lastName": "Man",
+//   "bio": "i am a great reader",
+// }
+// _updateUser(tempToken, "abc", editedData).then(data => console.log(data))
 
 
 

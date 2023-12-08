@@ -16,7 +16,7 @@ export default ({}) => {
         else userName = "Ahsan Habib";
         initialRating = 5;
         initialDescription = "";
-        console.log(b_id);
+        // console.log(b_id);
     } catch (e) {
         b_id = "foo";
         if (login_info.user_name) userName = login_info.user_name;
@@ -99,28 +99,34 @@ export default ({}) => {
                         <button
                             className="btn btn-primary"
                             onClick={() => {
-                                console.log(rating, description);
+                                // console.log(rating, description);
                                 if (login_info.user_name) {
-                                    const reviewData = {
-                                        bookId: b_id,
-                                        rating: rating,
-                                        reviewText: description,
-                                    };
-                                    console.log(edit);
+                                    // console.log(edit);
                                     if (!edit) {
+                                        const reviewData = {
+                                            bookId: b_id,
+                                            rating: rating,
+                                            reviewText: description,
+                                        };
                                         _addReview(
                                             login_info.token,
                                             reviewData
                                         ).then((data) => {
-                                            console.log(data);
+                                            // console.log(data);
                                             navigate_to(-1);
                                         });
                                     } else {
+                                        const reviewData = {
+                                            bookId: b_id,
+                                            rating: rating,
+                                            reviewText: description,
+                                        };
+                                        // console.log(reviewData);
                                         _editReview(
                                             login_info.token,
                                             reviewData
                                         ).then((data) => {
-                                            console.log(data);
+                                            // console.log(data);
                                             navigate_to(-1);
                                         });
                                     }

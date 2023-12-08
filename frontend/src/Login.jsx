@@ -30,7 +30,7 @@ const Login = () => {
                 .then((data) => {
                     // console.log(data);
                     if (data.success) {
-                        console.log(data);
+                        // console.log(data);
                         login_info.user_name = data.user.username;
                         login_info.email = data.user.email;
                         login_info.token = data.token;

@@ -27,7 +27,7 @@ export default function () {
             if (login_info.user_name) {
                 _getChallenge(login_info.token)
                     .then((data) => {
-                        console.log(data);
+                        // console.log(data);
                         const tmp = data.challengeDetails;
 
                         completedBooks = tmp.completedBooks;
@@ -97,7 +97,7 @@ export default function () {
                         try {
                             const tmp_target = parseInt(newTargetBooks);
                             const tmp_compl = parseInt(newCompletedBooks);
-                            console.log("DOne!", tmp_compl, tmp_target);
+                            // console.log("DOne!", tmp_compl, tmp_target);
                             if (isNaN(tmp_target) || isNaN(tmp_compl))
                                 throw new Error("Insert integer only");
                             if (tmp_compl > tmp_target)
@@ -120,7 +120,7 @@ export default function () {
                         } catch (e) {
                             console.log(e);
                         }
-                        console.log(newTargetBooks, newCompletedBooks);
+                        // console.log(newTargetBooks, newCompletedBooks);
                     }}
                 >
                     Complete Edit

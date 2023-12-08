@@ -99,7 +99,7 @@ export default function () {
         if (login_info.user_name) {
             _getShelves(login_info.user_name).then((data) => {
                 const tmp_data = data.shelves.map((item) => {
-                    console.log(item.books);
+                    // console.log(item.books);
                     return {
                         name: item.label,
                         books: item.books.map((elm) => elm.book),
@@ -300,7 +300,7 @@ export default function () {
                                                     item.name
                                                 )
                                                     .then((data) => {
-                                                        console.log(data);
+                                                        // console.log(data);
                                                         set_libUpdateTriggered(
                                                             libUpdateTriggered +
                                                                 1

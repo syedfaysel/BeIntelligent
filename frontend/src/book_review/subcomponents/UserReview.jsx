@@ -99,6 +99,7 @@ export default function ({
                                         userName: userName,
                                         initialRating: initialRating,
                                         initialDescription: initialDescription,
+                                        b_id: b_id,
                                         edit: true,
                                     },
                                 });
@@ -116,13 +117,13 @@ export default function ({
                                     deleteReviewText: true,
                                     deleteRating: true,
                                 };
-                                console.log(reviewData);
+                                // console.log(reviewData);
                                 _deleteReview(login_info.token, reviewData)
                                     .then((data) => {
                                         trigger_page_changed(
                                             (prevState) => prevState + 1
                                         );
-                                        console.log(data);
+                                        // console.log(data);
                                     })
                                     .catch((err) => console.log(err));
                             }}

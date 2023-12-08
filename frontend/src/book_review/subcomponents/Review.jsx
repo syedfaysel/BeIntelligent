@@ -15,7 +15,7 @@ export default () => {
         image_url = state.image_url;
         name = state.name;
         b_id = state.b_id;
-        console.log(image_url, name, b_id);
+        // console.log(image_url, name, b_id);
     } catch (e) {
         b_id = "foo";
         image_url = "./src/assets/the_foundation_2.jpg";
@@ -79,7 +79,7 @@ export default () => {
                     };
                 });
                 change_book_reviews(tmp_reviews);
-                console.log(tmp_reviews);
+                // console.log(tmp_reviews);
             });
         } else {
             console.log("Not logged in");

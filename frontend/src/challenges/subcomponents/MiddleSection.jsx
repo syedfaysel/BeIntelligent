@@ -16,7 +16,7 @@ export default function () {
             if (login_info.user_name) {
                 _getChallenge(login_info.token)
                     .then((data) => {
-                        console.log(data);
+                        // console.log(data);
                         const tmp = data.challengeDetails;
 
                         change_completedBooks(tmp.completedBooks);

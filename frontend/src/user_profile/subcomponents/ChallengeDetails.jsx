@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import login_info from "../../login_info";
-import { _getShelves } from "../../utils/axios_controllers";
+import {
+    _getReviewsByUsername,
+    _getShelves,
+} from "../../utils/axios_controllers";
 import { useNavigate } from "react-router";
 
 const ChallengeDetails = () => {
@@ -42,6 +45,10 @@ const ChallengeDetails = () => {
     const [libraryFolder, change_libraryFolder] = useState([]);
     useEffect(() => {
         if (login_info.user_name) {
+            // _getReviewsByUsername(login_info.token).then((data) =>
+            //     console.log(data)
+            // );
+
             _getShelves(login_info.user_name).then((data) => {
                 const tmp_data = data.shelves.map((item) => {
                     // console.log(item.books);

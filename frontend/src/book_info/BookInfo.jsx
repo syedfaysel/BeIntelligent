@@ -26,7 +26,7 @@ export default function () {
         genre = state.genre;
         description = state.description;
         b_id = state.b_id;
-        console.log(state.b_id);
+        // console.log(state.b_id);
     } catch (e) {
         b_id = "foo";
         image_url = "./src/assets/the_foundation_2.jpg";
@@ -166,10 +166,10 @@ export default function () {
                                         {libraryFolder.map((item) => (
                                             <li
                                                 onClick={() => {
-                                                    console.log(
-                                                        item.name,
-                                                        b_id
-                                                    );
+                                                    // console.log(
+                                                    //     item.name,
+                                                    //     b_id
+                                                    // );
                                                     if (login_info.user_name) {
                                                         _addBookToShelf(
                                                             login_info.token,
@@ -189,9 +189,9 @@ export default function () {
                                                                     change_sync_success(
                                                                         -1
                                                                     );
-                                                                console.log(
-                                                                    data
-                                                                );
+                                                                // console.log(
+                                                                //     data
+                                                                // );
                                                             })
                                                             .catch((err) => {
                                                                 change_sync_success(
@@ -225,10 +225,10 @@ export default function () {
                                             <li
                                                 onClick={() => {
                                                     if (login_info.user_name) {
-                                                        console.log(
-                                                            item.name,
-                                                            b_id
-                                                        );
+                                                        // console.log(
+                                                        //     item.name,
+                                                        //     b_id
+                                                        // );
                                                         _removeFromShelf(
                                                             login_info.token,
                                                             login_info.user_name,
@@ -247,9 +247,9 @@ export default function () {
                                                                     change_sync_success(
                                                                         -1
                                                                     );
-                                                                console.log(
-                                                                    data
-                                                                );
+                                                                // console.log(
+                                                                //     data
+                                                                // );
                                                             })
                                                             .catch((err) => {
                                                                 change_sync_success(

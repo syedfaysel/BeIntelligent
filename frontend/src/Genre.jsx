@@ -8,7 +8,7 @@ const Genre = (genre) => {
     const buttonClass = isActive
         ? "btn btn-active btn-outline btn-secondary"
         : "btn btn-outline btn-secondary";
-    console.log(genre);
+    // console.log(genre);
     return (
         <div className="">
             <div className="">

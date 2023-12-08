@@ -55,7 +55,7 @@ export default function () {
         const tmp_books = [];
         const tmp_genres = ["All"];
         for (let i = 0; i < data.length; i++) {
-            console.log(data);
+            // console.log(data);
             const tmp = {};
             tmp.id = data[i]._id;
             tmp.name = data[i].title;
@@ -164,7 +164,7 @@ export default function () {
                                         : 1;
                                 });
                             }
-                            console.log(books_to_sort);
+                            // console.log(books_to_sort);
                             change_books_to_show(books_to_sort);
                             change_is_sorted_by_rating(!is_sorted_by_rating);
                         }}

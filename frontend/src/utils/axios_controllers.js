@@ -162,7 +162,7 @@ export const _removeFromShelf = async function (authToken,username, label, bookI
 
 // ------------------ Review ------------------ //
 
-const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTY4Yzk3ODEyOGRmNzhlZjMzNTc4ZDMiLCJlbWFpbCI6InNvdW1pdHJhMjBAZ21haWwuY29tIiwidXNlcm5hbWUiOiJzb3VtaXRyYWRhcyIsImlhdCI6MTcwMTk2ODY4NiwiZXhwIjoxNzAyMDU1MDg2fQ.57XSOQQbyJZ4_XyNl6OWQxzst6c_SYLRXe1j_Yo6dRI"
+const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTcyMTAyM2IwYzJmMzkwZjU5NjA4M2IiLCJlbWFpbCI6InN5ZWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyYWpvIiwiaWF0IjoxNzAxOTc0MTM4LCJleHAiOjE3MDIwNjA1Mzh9.biSmai7xqw8u32ipn6X3-FF_x6o1mGi9J208YuJPv0g"
 // add a review //
 export const _addReview = async function (authToken, reviewData ) {
   const api_endpoint = `${base_url}/reviews/add-review`;
@@ -225,14 +225,19 @@ export const _deleteReview = async function (authToken, reviewData) {
     Authorization: `Bearer ${authToken}`,
     'Content-Type': 'application/json',
   };
+
   try {
-    const response = await axios.delete(api_endpoint, reviewData, {headers});
-    // console.log(response)
-      return response.data; //returns a success message
+    const response = await axios.delete(api_endpoint, {
+      headers,
+      data: reviewData, 
+    });
+    
+    return response.data;
   } catch (err) {
-      console.log(err.message);
+    console.log(err.message);
   }
 };
+
 // test
 // const reviewData = {
 //   "bookId": "655d0b16ca1df7808c938326",
@@ -241,6 +246,7 @@ export const _deleteReview = async function (authToken, reviewData) {
 // };
 
 // _deleteReview(tempToken, reviewData).then(data => console.log(data));
+
 
 //get review by book id
 export const _getReviewsByBookId = async function (authToken , bookId) {
@@ -320,6 +326,7 @@ export const _dislikeReview = async function (authToken){
 //test
 //dislikeReview("656a22401c76b05b0b2047c0").then(data => console.log(data))
 
+// ------------------ Take Challenge ------------------ //
 // get user challenge details //
 export const _getChallenge = async function (authToken) {
   const api_endpoint = `${base_url}/challenges/get-challenge`;
@@ -339,7 +346,7 @@ export const _getChallenge = async function (authToken) {
 };
 
 //test get Challenge
-// _getChallenge(tempToken).then(data => console.log(data));
+//_getChallenge(tempToken).then(data => console.log(data));
 
 
 // add target number of books //
@@ -387,11 +394,12 @@ export const _updateTargetBooks = async function (authToken, targetData) {
 //   "targetBooks" : 3
 // };
 
-// _editReview(tempToken, targetData).then(data => console.log(data));
+// _updateTargetBooks(tempToken, targetData).then(data => console.log(data));
+
 
 // delete challenge //
-export const _deleteChallnge = async function (authToken) {
-  const api_endpoint = `${base_url}/challeneges/delete-challenge`;
+export const _deleteChallenge = async function (authToken) {
+  const api_endpoint = `${base_url}/challenges/delete-challenge`;
 
   // Request headers with Authorization token
   const headers = {
@@ -399,15 +407,29 @@ export const _deleteChallnge = async function (authToken) {
     'Content-Type': 'application/json',
   };
   try {
-    const response = await axios.delete(api_endpoint, {headers});
-      return response.data; 
+    const response = await axios.delete(api_endpoint, { headers });
+    console.log('Request Headers:', headers);
+    console.log('Response:', response);
+    return response.data;
   } catch (err) {
-      console.log(err.message);
+    console.error('Error:', err.message);
+    if (err.response) {
+      console.log('Response Data:', err.response.data);
+    }
   }
+  
+  // try {
+  //   const response = await axios.delete(api_endpoint, { headers });
+  //   console.log('Response:', response);
+  //     return response.data;
+  // } catch (err) {
+  //     console.log(err.message);
+  // }
 };
 
 // test
-// _deleteChallenge(tmpToken).then(data => console.log(data))
+//_deleteChallenge(tempToken).then(data => console.log(data))
+
 
 
 

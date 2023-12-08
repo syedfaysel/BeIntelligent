@@ -51,3 +51,49 @@ export const getUserDetails = async (req, res, next) => {
 
 
 
+// Update user: 
+export const updateUser = async (req, res, next) => {
+  const {username} = req.user
+  try {
+    const { firstName, lastName, email, bio, preferredGenres } = req.body;
+    //validate
+
+    //check if a user already exist
+    const user = await User.findOne({ username });
+    if (!user) {
+      next("user doesn't exist");
+    }
+    // construct the queryObj based on req.body
+    const QueryObj = {};
+    if (firstName) QueryObj.firstName = firstName;
+    if (lastName) QueryObj.lastName = lastName;
+    if (email) QueryObj.email = email;
+    if (bio) QueryObj.bio = bio;
+    if (preferredGenres) QueryObj.preferredGenres = preferredGenres;
+
+    //update the user:
+
+    user.firstName = QueryObj.firstName || user.firstName;
+    user.lastName = QueryObj.lastName || user.lastName;
+    user.email = QueryObj.email || user.email;
+    user.bio = QueryObj.bio || user.bio;
+    user.preferredGenres = QueryObj.preferredGenres || user.preferredGenres;
+
+    await user.save();
+
+    res.status(201).send({
+      success: true,
+      message: "User updated successfully",
+      user: {
+        _id: user._id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        preferredGenres: user.preferredGenres,
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};

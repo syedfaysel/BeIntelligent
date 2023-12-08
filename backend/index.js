@@ -45,3 +45,5 @@ app.listen(PORT, () => {
       .bgCyan
   );
 });
+
+export default app;

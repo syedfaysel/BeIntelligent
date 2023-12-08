@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import login_info from "../../login_info";
+import { _getShelves } from "../../utils/axios_controllers";
+import { useNavigate } from "react-router";
 
 const ChallengeDetails = () => {
+    const navigate_to = useNavigate();
     const challengeData = {
-        booksRead: 25,
-        pagesRead: 5000,
+        booksRead: 0,
+        pagesRead: 0,
         shelvesInLibrary: 3,
         bookList: [
             "Book 1",
@@ -35,6 +39,22 @@ const ChallengeDetails = () => {
         ],
     };
 
+    const [libraryFolder, change_libraryFolder] = useState([]);
+    useEffect(() => {
+        if (login_info.user_name) {
+            _getShelves(login_info.user_name).then((data) => {
+                const tmp_data = data.shelves.map((item) => {
+                    // console.log(item.books);
+                    return item.label;
+                });
+                change_libraryFolder(tmp_data);
+                // console.log(tmp_data);
+            });
+        } else {
+            console.log("Not logged in");
+        }
+    }, []);
+
     const [showAllBooks, setShowAllBooks] = useState(false);
 
     const [showAllShelves, setShowAllShelves] = useState(false);
@@ -50,25 +70,31 @@ const ChallengeDetails = () => {
             </div>
 
             <div className="text-lg font-bold mb-4 border rounded-lg p-2">
-                <h2>
-                    Number of Shelves in Library :{" "}
-                    {challengeData.shelvesInLibrary}
-                </h2>
+                <h2>Number of Shelves in Library : {libraryFolder.length}</h2>
             </div>
 
             <div className="mb-4">
                 <h2 className="text-center m-3 text-4xl font-bold">
                     Your Challenges
                 </h2>
-
-                <ul className="text-lg m-2">
+                <h2 className="text-center m-2 text-xl font-bold">
+                    1 Challenge Activated this year
+                </h2>
+                {/* <ul className="text-lg m-2">
                     {challengeData.bookList
                         .slice(0, showAllBooks ? undefined : 6)
                         .map((book, index) => (
                             <li key={index}>{book}</li>
                         ))}
-                </ul>
-                <button className="btn btn-secondary mt-2">View All</button>
+                </ul> */}
+                <button
+                    className="btn btn-secondary mt-2"
+                    onClick={() => {
+                        navigate_to("/challenges");
+                    }}
+                >
+                    View Challenge
+                </button>
             </div>
 
             <div>
@@ -77,14 +103,21 @@ const ChallengeDetails = () => {
                 </h2>
 
                 <ul className="text-lg m-2">
-                    {challengeData.shelfList
+                    {libraryFolder
                         .slice(0, showAllShelves ? undefined : 6)
                         .map((shelf, index) => (
                             <li key={index}>{shelf}</li>
                         ))}
                 </ul>
 
-                <button className="btn btn-secondary mt-2">View All</button>
+                <button
+                    className="btn btn-secondary mt-2"
+                    onClick={() => {
+                        navigate_to("/booklibrary");
+                    }}
+                >
+                    View All
+                </button>
             </div>
         </div>
     );

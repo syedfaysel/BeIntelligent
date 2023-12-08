@@ -1,9 +1,10 @@
 import React from "react";
+import login_info from "../../login_info";
 
 const UserDetails = () => {
     const user = {
-        name: "Moye Moye",
-        email: "moye.moye@example.com",
+        name: login_info.user_name,
+        email: login_info.email,
         profilePicture: "https://placekitten.com/200/200",
     };
 

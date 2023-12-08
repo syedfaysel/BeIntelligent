@@ -16,7 +16,7 @@ const UserProfile = () => {
                     <MenuDropdown />
                 </div>
             </div>
-            <div className="m-auto p-4">
+            <div className="m-auto p-4 w-screen">
                 <div className="grid grid-cols-2 items-">
                     <div>
                         <UserDetails />

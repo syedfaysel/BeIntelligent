@@ -11,6 +11,7 @@ export default function ({
     show_add,
     change_show_add,
     b_id,
+    trigger_page_changed,
 }) {
     // const [rating, setRating] = useState(initialRating);
     // const [description, setDescription] = useState(initialDescription);
@@ -58,6 +59,7 @@ export default function ({
                                         name={`rating-${name_extension}`}
                                         className="mask mask-star-2 bg-orange-400"
                                         checked
+                                        disabled
                                         // onChange={() => setRating(index)}
                                     />
                                 );
@@ -68,6 +70,7 @@ export default function ({
                                         type="radio"
                                         name={`rating-${name_extension}`}
                                         className="mask mask-star-2 bg-orange-400"
+                                        disabled
                                         // onChange={() => setRating(index)}
                                     />
                                 );
@@ -115,7 +118,12 @@ export default function ({
                                 };
                                 console.log(reviewData);
                                 _deleteReview(login_info.token, reviewData)
-                                    .then((data) => console.log(data))
+                                    .then((data) => {
+                                        trigger_page_changed(
+                                            (prevState) => prevState + 1
+                                        );
+                                        console.log(data);
+                                    })
                                     .catch((err) => console.log(err));
                             }}
                         >

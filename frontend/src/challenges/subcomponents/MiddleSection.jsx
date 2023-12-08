@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import login_info from "../../login_info";
-import { _deleteChallnge, _getChallenge } from "../../utils/axios_controllers";
+import { _deleteChallenge, _getChallenge } from "../../utils/axios_controllers";
 import { useNavigate } from "react-router";
 
 export default function () {
     const navigate_to = useNavigate();
+    const [page_edited, trigger_page_edited] = useState(0);
     const [completedBooks, change_completedBooks] = useState(0),
         [progress, change_progress] = useState(0),
         [targetBooks, change_targetBooks] = useState(0),
@@ -28,7 +29,7 @@ export default function () {
             } else {
                 console.log("Not looged in");
             }
-        }, []);
+        }, [page_edited]);
     } catch (e) {
         console.log("Error: ", e);
     }
@@ -67,7 +68,9 @@ export default function () {
                 <button
                     className="btn btn-wide btn-outline btn-error"
                     onClick={() => {
-                        _deleteChallnge(login_info.token);
+                        _deleteChallenge(login_info.token).then((data) => {
+                            trigger_page_edited(page_edited + 1);
+                        });
                     }}
                 >
                     Delete Challenge

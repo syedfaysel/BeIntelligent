@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import login_info from "../../login_info";
 import {
-    _deleteChallnge,
     _getChallenge,
     _updateTargetBooks,
 } from "../../utils/axios_controllers";

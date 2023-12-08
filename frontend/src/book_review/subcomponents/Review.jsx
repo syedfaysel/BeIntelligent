@@ -7,6 +7,7 @@ import login_info from "../../login_info";
 
 export default () => {
     const navigate_to = useNavigate();
+    const [page_changed, trigger_page_changed] = useState(0);
     let name, image_url, b_id;
 
     try {
@@ -83,7 +84,7 @@ export default () => {
         } else {
             console.log("Not logged in");
         }
-    }, []);
+    }, [page_changed]);
 
     return (
         <div>
@@ -106,6 +107,7 @@ export default () => {
                             show_add={show_add}
                             change_show_add={change_show_add}
                             b_id={b_id}
+                            trigger_page_changed={trigger_page_changed}
                         />
                     </div>
                 ))}

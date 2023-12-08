@@ -57,7 +57,7 @@ export default ({}) => {
                     <div className="mb-4">
                         <div className="rating rating-md ">
                             {[1, 2, 3, 4, 5].map((index) => {
-                                if (Math.floor(initialRating) == index) {
+                                if (Math.floor(rating) == index) {
                                     return (
                                         <input
                                             key={index}

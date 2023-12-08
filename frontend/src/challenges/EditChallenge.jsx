@@ -3,7 +3,7 @@ import Footer from "../common_components/Footer";
 import { useEffect, useState } from "react";
 import { _getChallenge } from "../utils/axios_controllers";
 import login_info from "../login_info";
-import MiddleSection from "./subcomponents/MiddleSection";
+import MiddleEditSection from "./subcomponents/MiddleEditSection";
 export default function () {
     return (
         <div className="flex flex-col">
@@ -15,7 +15,7 @@ export default function () {
                     <MenuDropdown />
                 </div>
             </div>
-            <MiddleSection />
+            <MiddleEditSection />
             <Footer />
         </div>
     );

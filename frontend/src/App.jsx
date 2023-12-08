@@ -11,6 +11,7 @@ import login_info from "./login_info";
 import { useEffect } from "react";
 import UserProfile from "./user_profile/UserProfile";
 import Challenges from "./challenges/Challenges";
+import EditChallenge from "./challenges/EditChallenge";
 export default function () {
     const navigate_to = useNavigate();
     // navigate_to("/login");
@@ -31,6 +32,7 @@ export default function () {
 
             <Route path="login" element={<Login />}></Route>
             <Route path="/challenges" element={<Challenges />} />
+            <Route path="/editchallenge" element={<EditChallenge />} />
             <Route path="register" element={<Register />}></Route>
             <Route path="selectgenre" element={<SelectGenre />}></Route>
             <Route path="booklibrary" element={<BookLibrary />} />

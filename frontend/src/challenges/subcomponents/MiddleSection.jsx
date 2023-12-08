@@ -48,7 +48,9 @@ export default function () {
     return (
         <div className="h-screen flex flex-col justify-center items-center gap-12">
             <h1 className="text-4xl font-bold ">
-                Book challenge for {username} in year {year}
+                Book challenge for{" "}
+                {login_info.user_name ? login_info.first_name : "Ahsan"} in year{" "}
+                {year}
             </h1>
             <div className="grid grid-cols-[repeat(2,auto)] gap-x-12 w-max">
                 {showval("Target Number of Books", targetBooks)}

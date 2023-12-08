@@ -3,4 +3,6 @@ export default {
     user_name: "",
     email: "",
     token: "",
+    first_name: "",
+    last_name: "",
 };

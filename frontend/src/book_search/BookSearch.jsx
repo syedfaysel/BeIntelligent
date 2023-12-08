@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 // import { fetchBooks } from "../api_controller/loadBooks";
 import { _fetchBooks } from "../utils/axios_controllers";
 import { useLocation } from "react-router-dom";
+import login_info from "../login_info";
 
 export default function () {
     let user_name, recommended_genre;
@@ -19,6 +20,7 @@ export default function () {
         user_name = "Ahsan Habib";
         recommended_genre = ["Thriller"];
     }
+    if (login_info.user_name) user_name = login_info.first_name;
 
     const [searched_keyword, change_searched_keyword] = useState("");
     const [current_genre, change_current_genre] = useState("");

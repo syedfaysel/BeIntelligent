@@ -428,7 +428,7 @@ export const _deleteChallenge = async function (authToken) {
 };
 
 // test
-_deleteChallenge(tempToken).then(data => console.log(data))
+//_deleteChallenge(tempToken).then(data => console.log(data))
 
 
 

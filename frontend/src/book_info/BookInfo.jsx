@@ -26,7 +26,7 @@ export default function () {
         genre = state.genre;
         description = state.description;
         b_id = state.b_id;
-        console.log(state.b_id);
+        // console.log(state.b_id);
     } catch (e) {
         b_id = "foo";
         image_url = "./src/assets/the_foundation_2.jpg";
@@ -71,7 +71,7 @@ export default function () {
                     // console.log(item.books);
                     return {
                         name: item.label,
-                        books: item.books.map((elm) => elm._id),
+                        books: item.books.map((elm) => elm.book),
                     };
                 });
                 change_libraryFolder(tmp_data);
@@ -166,6 +166,10 @@ export default function () {
                                         {libraryFolder.map((item) => (
                                             <li
                                                 onClick={() => {
+                                                    // console.log(
+                                                    //     item.name,
+                                                    //     b_id
+                                                    // );
                                                     if (login_info.user_name) {
                                                         _addBookToShelf(
                                                             login_info.token,
@@ -185,9 +189,9 @@ export default function () {
                                                                     change_sync_success(
                                                                         -1
                                                                     );
-                                                                console.log(
-                                                                    data
-                                                                );
+                                                                // console.log(
+                                                                //     data
+                                                                // );
                                                             })
                                                             .catch((err) => {
                                                                 change_sync_success(
@@ -221,6 +225,10 @@ export default function () {
                                             <li
                                                 onClick={() => {
                                                     if (login_info.user_name) {
+                                                        // console.log(
+                                                        //     item.name,
+                                                        //     b_id
+                                                        // );
                                                         _removeFromShelf(
                                                             login_info.token,
                                                             login_info.user_name,
@@ -239,9 +247,9 @@ export default function () {
                                                                     change_sync_success(
                                                                         -1
                                                                     );
-                                                                console.log(
-                                                                    data
-                                                                );
+                                                                // console.log(
+                                                                //     data
+                                                                // );
                                                             })
                                                             .catch((err) => {
                                                                 change_sync_success(
@@ -263,7 +271,13 @@ export default function () {
                                     <button
                                         className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                                         onClick={() => {
-                                            navigate_to("/bookreview");
+                                            navigate_to("/bookreview", {
+                                                state: {
+                                                    b_id: b_id,
+                                                    name: name,
+                                                    image_url: image_url,
+                                                },
+                                            });
                                         }}
                                     >
                                         Reviews

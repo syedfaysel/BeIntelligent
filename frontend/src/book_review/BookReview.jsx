@@ -4,7 +4,7 @@ import Footer from "../common_components/Footer";
 import Review from "./subcomponents/Review";
 // import "../book_search/subcomponents/styles/MenuBar.css";
 
-const BookReview = () => {
+export default () => {
     return (
         <div>
             <div className="navbar bg-base-100 bi-nav">
@@ -24,4 +24,4 @@ const BookReview = () => {
     );
 };
 
-export default BookReview;
+// export default BookReview;

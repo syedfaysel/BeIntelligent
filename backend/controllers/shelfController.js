@@ -1,4 +1,6 @@
+import { Query } from "mongoose";
 import User from "../models/userModel.js";
+import { updateProgress } from "./challengeController.js";
 
 
 // Create a new shelf for a user by username
@@ -29,7 +31,6 @@ export const createShelfByUsername = async (req, res, next) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-
 
 
 // Delete a custom shelf for a user
@@ -73,7 +74,7 @@ export const deleteShelf = async (req, res, next) => {
 export const addBookToShelf = async (req, res) => {
   const { username } = req.user;
   const { shelfName } = req.params;
-  const { bookId } = req.body; //or use isbn instead
+  const { bookId, dateStarted, dateFinished, pageProgress } = req.body; //or use isbn instead
 
   try {
     const user = await User.findOne({ username });
@@ -90,12 +91,42 @@ export const addBookToShelf = async (req, res) => {
     }
 
     // Check if the book is already in the shelf
-    if (shelf.books.includes(bookId)) {
+    if (shelf.books.some((b) => b.book.equals(bookId))) {
       return res.status(400).json({ error: 'Book already in the shelf' });
     }
 
+    // create the comprehensive QueryObject: 
+    const QueryObj = { book: bookId };
+
+    // check if the shelf is `Read` & year is current year-> increase progress
+    
+    if (shelfName === 'Read') {
+      // if (!dateStarted) {
+      //   dateStarted = new Date("1-1-2023")
+      // }
+      // if (!dateFinished) {
+      //   dateFinished = new Date("6-6-2023")
+      // }
+      QueryObj.dateStarted = new Date(dateStarted || "1-2-2023") ;
+      QueryObj.dateFinished = new Date(dateFinished || "6-6-2023");
+      
+      // call a function from takeChallenge
+      await updateProgress(user.username, true)
+    }
+    if (shelfName === "Reading") {
+      //only datestarted and page
+      // if (!dateStarted) {
+      //   dateStarted = new Date("1-1-2023")
+      // }
+      
+      QueryObj.dateStarted = new Date(dateStarted || "1-2-2023");
+      QueryObj.pageProgress = pageProgress || 1;
+      // call a function from takeChallenge
+      await updateProgress(user.username, false)
+    }
+
     // Add the book to the shelf
-    shelf.books.push(bookId);
+    shelf.books.push(QueryObj);
     await user.save();
 
     return res.status(200).json({
@@ -124,7 +155,7 @@ export const removeBookFromShelf = async (req, res, next) => {
     }
 
     // Find the book in the shelf
-    const bookIndex = user.shelves[shelfIndex].books.findIndex((book) => book.equals(bookId));
+    const bookIndex = user.shelves[shelfIndex].books.findIndex((book) => book.book.equals(bookId));
 
     if (bookIndex === -1) {
       return res.status(404).json({ error: 'Book not found in the shelf' });

@@ -157,3 +157,307 @@ export const _removeFromShelf = async function (authToken,username, label, bookI
 //test
 // const tmpBookId = "655c96c9545a2f3bb0b7c128"
 // _removeFromShelf(tmpToken, "faysel", "finance", tmpBookId).then((data)=> console.log(data))
+
+
+
+// ------------------ Review ------------------ //
+
+const tempToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NTcyMjNhOTVjMjQ5OTY2NTY0ODU1NTgiLCJlbWFpbCI6ImFiY0BhYmMuY29tIiwidXNlcm5hbWUiOiJhYmMiLCJpYXQiOjE3MDIwMjEwMzQsImV4cCI6MTcwMjEwNzQzNH0.HvYkabE8hjO7bEedUBzmq5f98NMAhs-7Lb_slERbwD4"
+// add a review //
+export const _addReview = async function (authToken, reviewData ) {
+  const api_endpoint = `${base_url}/reviews/add-review`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.post(api_endpoint, reviewData, {headers});
+    // console.log(response)
+      return response.data; //returns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+// // test
+// const reviewData = {
+//   bookId: "655d0b16ca1df7808c938326",
+//   rating: 4,
+//   reviewText: "It is really a good book"
+// };
+
+// _addReview(tempToken, reviewData).then(data => console.log(data));
+
+// edit review //
+export const _editReview = async function (authToken, reviewData) {
+  const api_endpoint = `${base_url}/reviews/edit-review`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.put(api_endpoint, reviewData, {headers});
+    // console.log(response)
+      return response.data; //returns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+// const reviewData = {
+//   bookId: "655d0b16ca1df7808c938326",
+//   rating: 3,
+//   reviewText: "This is a good book"
+// };
+
+// _editReview(tempToken, reviewData).then(data => console.log(data));
+
+//delete review//
+export const _deleteReview = async function (authToken, reviewData) {
+  const api_endpoint = `${base_url}/reviews/delete-review`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const response = await axios.delete(api_endpoint, {
+      headers,
+      data: reviewData, 
+    });
+    
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+// test
+// const reviewData = {
+//   "bookId": "655d0b16ca1df7808c938326",
+//   "deleteReviewText" : true,
+//   "deleteRating" : true
+// };
+
+// _deleteReview(tempToken, reviewData).then(data => console.log(data));
+
+
+//get review by book id
+export const _getReviewsByBookId = async function (authToken , bookId) {
+  const api_endpoint = `${base_url}/reviews/get-book-reviews/${bookId}`;
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.get(api_endpoint, {headers});
+    // console.log(response)
+      return response.data; //returns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+// _getReviewsByBookId(tempToken, "655d0b16ca1df7808c938326").then(data => console.log(data))
+
+//get review by username
+export const _getReviewsByUsername = async function (authToken) {
+  const api_endpoint = `${base_url}/reviews/get-book-reviews/username`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.get(api_endpoint, {headers});
+    // console.log(response)
+      return response.data; //returns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+//getReviewsByUsername("syed").then(data => console.log(data))
+
+export const _likeReview = async function (authToken){
+  const api_endpoint = `${base_url}/reviews/like-review/reviewId`;
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.post(api_endpoint, {headers});
+    // console.log(response)
+      return response.data; //returns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+//likeReview("656a22401c76b05b0b2047c0").then(data => console.log(data))
+
+export const _dislikeReview = async function (authToken){
+  const api_endpoint = `${base_url}/reviews/dislike-review/reviewId`;
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.post(api_endpoint, {headers});
+    // console.log(response)
+      return response.data; //returns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+//dislikeReview("656a22401c76b05b0b2047c0").then(data => console.log(data))
+
+// ------------------ Take Challenge ------------------ //
+// get user challenge details //
+export const _getChallenge = async function (authToken) {
+  const api_endpoint = `${base_url}/challenges/get-challenge`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.get(api_endpoint, {headers});
+    
+      return response.data;
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test get Challenge
+//_getChallenge(tempToken).then(data => console.log(data));
+
+
+// add target number of books //
+export const _addTargetBooks = async function (authToken, targetData ) {
+  const api_endpoint = `${base_url}/challenges/add-target-books`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.post(api_endpoint, targetData, {headers});
+      return response.data; 
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+//test
+// const targetData = {
+//   "targetBooks" : 5
+// };
+
+// _addTargetBooks(tempToken, targetData).then(data => console.log(data));
+
+// update target number of books //
+export const _updateTargetBooks = async function (authToken, targetData) {
+  const api_endpoint = `${base_url}/challenges/update-target-books`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.patch(api_endpoint, targetData, {headers});
+      return response.data; 
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+//test
+// const targetData = {
+//   "targetBooks" : 3
+// };
+
+// _updateTargetBooks(tempToken, targetData).then(data => console.log(data));
+
+
+// delete challenge //
+export const _deleteChallenge = async function (authToken) {
+  const api_endpoint = `${base_url}/challenges/delete-challenge`;
+
+  // Request headers with Authorization token
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  };
+  try {
+    const response = await axios.delete(api_endpoint, { headers });
+    console.log('Request Headers:', headers);
+    console.log('Response:', response);
+    return response.data;
+  } catch (err) {
+    console.error('Error:', err.message);
+    if (err.response) {
+      console.log('Response Data:', err.response.data);
+    }
+  }
+  
+  // try {
+  //   const response = await axios.delete(api_endpoint, { headers });
+  //   console.log('Response:', response);
+  //     return response.data;
+  // } catch (err) {
+  //     console.log(err.message);
+  // }
+};
+
+// test
+//_deleteChallenge(tempToken).then(data => console.log(data))
+
+
+
+//update user //
+export const _updateUser = async function (authToken, username, editedData) {
+  //edited data can optionally contain firstName, lastName, email, bio, preferredGenres
+  const api_endpoint = `${base_url}/user/${username}`;
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json',
+  }
+  try {
+    const response = await axios.put(api_endpoint, editedData, {headers});
+      return response.data; //retruns a success message
+  } catch (err) {
+      console.log(err.message);
+  }
+};
+
+// tested
+// const editedData = {
+//   "firstName": "Md ABCD",
+//   "lastName": "Man",
+//   "bio": "i am a great reader",
+// }
+// _updateUser(tempToken, "abc", editedData).then(data => console.log(data))
+
+
+
+
+
+

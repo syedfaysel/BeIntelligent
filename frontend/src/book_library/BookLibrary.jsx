@@ -24,6 +24,7 @@ export default function () {
         // console.log(e);
         user_name = "Ahsan Habib";
     }
+    if (login_info.user_name) user_name = login_info.first_name;
 
     const [current_page, change_current_page] = useState(1);
     const [is_sorted_by_rating, change_is_sorted_by_rating] = useState(false);
@@ -102,7 +103,7 @@ export default function () {
                     // console.log(item.books);
                     return {
                         name: item.label,
-                        books: item.books.map((elm) => elm._id),
+                        books: item.books.map((elm) => elm.book),
                     };
                 });
                 change_libraryFolder(tmp_data);
@@ -300,7 +301,7 @@ export default function () {
                                                     item.name
                                                 )
                                                     .then((data) => {
-                                                        console.log(data);
+                                                        // console.log(data);
                                                         set_libUpdateTriggered(
                                                             libUpdateTriggered +
                                                                 1
